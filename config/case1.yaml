@@ -1,0 +1,36 @@
+# Case 1 (Paper A, Sec. 4.2): 4 vessels, leaders 1-2, followers 3-4. Graph: Fig. 2.
+# Góc có thể viết dạng chuỗi chứa "pi" (vd "pi/4"); src/config.py tự đổi sang số.
+# Mọi lựa chọn không có trong bài: xem docs/assumptions.md (số mục ghi trong ngoặc).
+name: case1
+
+sim:
+  t_end: 40.0          # s
+  dt: 0.001            # RK4 step (B-15)
+  seed: 0              # seed của rand trong delta(t)
+
+graph:
+  n_leaders: 2
+  # (i, j, g*_ij), g*_ij = (p_j - p_i)/||.||, mỗi cạnh vô hướng ghi một lần
+  bearings:
+    - [3, 1, [1.0, 0.0]]
+    - [3, 2, ["sqrt(2)/2", "-sqrt(2)/2"]]
+    - [4, 2, [1.0, 0.0]]
+    - [4, 3, [0.0, 1.0]]
+
+initial:               # eta = [x, y, psi], nu = 0 cho mọi tàu
+  eta:
+    1: [10.0, 0.0, "pi/4"]
+    2: [10.0, -9.0, "pi/4"]
+    3: [-11.0, 1.0, "pi/2"]
+    4: [-9.0, -10.0, 0.0]
+
+high_level:
+  v_c: [4.0, 4.0]      # m/s
+  psi0: "pi/4"
+  k_p: 30.0
+  k_v: 10.0            # Paper A: 0.1 -> đối chứng; quét {5, 10, 20} (assumptions §1, K2)
+  k_omega: 25.0        # (4), theo [L21]
+  scaling:             # Eq. (63): beta_s(t) từng khúc
+    - [0.0, 15.0, 0.073]
+    - [15.0, 25.0, 0.0]
+    - [25.0, 40.0, -0.073]
