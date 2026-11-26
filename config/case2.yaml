@@ -32,7 +32,7 @@ high_level:
   v_c: [4.0, 4.0]
   psi0: "pi/4"
   k_p: 30.0
-  k_v: 10.0            # Paper A: 0.1 (assumptions §1, K2)
+  k_v: 40.0            # Paper A: 0.1; quét {5, 10, 20, 40}, chọn ở Mốc 2 (assumptions §1, K2)
   k_omega: 25.0
   scaling:
     - [0.0, 15.0, 0.073]

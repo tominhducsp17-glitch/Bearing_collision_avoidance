@@ -35,7 +35,7 @@ def main():
         print(f"  centroid c(p*) = ({c[0]:.2f}, {c[1]:.2f});  s = {s_n:.2f} (/n, [L21])"
               f"  |  {s_raw:.2f} (không /n, khớp Hình 12)")
         hl = cfg["high_level"]
-        for kv in (0.1, 5.0, 10.0, 20.0):
+        for kv in (0.1, 5.0, 10.0, 20.0, 40.0):
             zeta = kv * np.sqrt(lam) / (2 * np.sqrt(hl["k_p"]))
             # slowest real part of s^2 + kv*lam*s + kp*lam = 0
             re = [max(np.roots([1, kv * l, hl["k_p"] * l]).real) for l in lam]
