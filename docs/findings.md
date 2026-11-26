@@ -42,3 +42,11 @@ Trạng thái: ✅ đã xử lý · ⚠️ còn mở hoặc cần theo dõi · �
 - 💡 **Sai số bearing gần như không phụ thuộc tầng thấp tốt hay kém:** biến thể ζ có z_υ khoảng 3 m/s mà RMSE bearing vẫn bằng cấu hình chính. Lý do là (13) dùng vị trí tàu thật, nên tàu ảo tự bù phần trễ. **Khi so các phương pháp (Mốc 6) phải báo thêm z_υ, z_η và tổng lực.**
 - ⚠️ Quá độ góc hướng trong 2 s đầu là lớn, do ‖Π‖ ban đầu rất lớn và do (62) bỏ qua m23. Dùng M đầy đủ giảm được khoảng 40 %.
 - ✅ Lực surge khoảng 1100 N khi chạy đều, khớp Hình 9a.
+
+## Mốc 4: IRL trên bài toán đồ chơi
+
+- ✅ **Thuật toán 2 cài đúng.** Trọng số học được khớp nghiệm ARE H∞ có chiết khấu (sai số tương đối 1e-10 đến 1e-7) và khớp phép lặp chính sách dùng mô hình **ở từng vòng**. Phép kiểm này xác nhận cả việc sửa dấu ρ₂ (B-5).
+- ✅ **T = 1 ms của Paper A không phải vấn đề** khi dữ liệu không có nhiễu đo: cả 36 cấu hình quét (T, thời lượng thu, biên độ thăm dò) đều đủ hạng và chính xác.
+- ⚠️ **Đã tái hiện được rủi ro B-6 trên bài đồ chơi:** nhiễu nhiều kênh gần như hằng, cộng với W_d⁽⁰⁾ = 0, làm ρ₁ thiếu hạng. Ở Mốc 5 sẽ thử lần lượt: đo hạng với dữ liệu như bài, rồi W_d⁽⁰⁾ ≠ 0, rồi bơm thêm nhiễu thăm dò vào kênh d.
+- ⚠️ Rủi ro chính của Mốc 5 chuyển sang việc **xấp xỉ hệ phi tuyến bằng cơ sở hàm bị cắt** (45 số hạng bậc hai, actor tuyến tính), và thang đo của R (K4).
+- ✅ Hệ không ổn định cần khởi tạo từ một chính sách chấp nhận được. Code đã có sẵn phương án này (mục 8).

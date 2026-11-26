@@ -21,3 +21,5 @@ Toàn bộ hình sinh lại được bằng các script trong `scripts/` (xem `d
 | ![](moc3/case1_main_yaw.png) | Góc hướng: quá độ lớn ở 2 s đầu; xác lập ở khoảng 1.08 rad thay vì π/4, vì M1 không bù mô-men nhiễu δ_r. |
 | ![](moc3/case1_main_zups_u.png) | Sai số vận tốc surge: xác lập khoảng δ_u/k_u ≈ 0.15 m/s (so với Hình 8). |
 | ![](moc3/case1_main_tau_u.png) | Lực surge: khoảng 1100 N khi chạy đều, khớp mức lực ở Hình 9a. |
+
+

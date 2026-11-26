@@ -93,3 +93,34 @@ Paper A báo cáo RMSE của M1 là 0.1136 (Case 1) và 0.2903 (Case 2), và t�
 - M1 không nhiễu bám về 0;
 - z_u xác lập ≈ δ_u/k_u;
 - ngoài plant, runner và baselines, không file nào import tham số tàu.
+
+## Mốc 4: IRL trên bài toán đồ chơi biết trước lời giải (26/11/2026)
+
+Lệnh chạy: `.venv/bin/python scripts/toy_irl.py` (khoảng 15 s). Kết quả nằm ở `results/moc4_toy/`. Các test tương ứng ở `tests/test_irl_toy.py` (9 test).
+
+### Cài đặt
+
+- `src/low_level/offpolicy_irl.py` cài phương trình Bellman off-policy (45) và phép lặp (57)–(61) ở dạng tổng quát. Module này không biết gì về tàu.
+- Các tích phân trong mỗi khoảng chỉ tính một lần, ở dạng ma trận: ∫w·u·φᵀ, ∫w·φ·φᵀ, ∫w·d·ψᵀ, ∫w·ψ·ψᵀ, với w = e^{−α(τ−t_{j−1})}. Nhờ vậy mỗi vòng lặp chỉ còn các phép nhân ma trận nhỏ. Cách làm theo ý tưởng tích phân Kronecker của OffQLCTS.jl.
+- u và d được giữ không đổi trong mỗi bước con (ZOH, giống bộ điều khiển 1 ms của mô phỏng tàu). Tích phân dùng quy tắc hình thang có tính tới ZOH.
+- Giải bằng `lstsq` có chuẩn hóa cột, không dùng phương trình chuẩn (61). Mỗi vòng ghi lại hạng và số điều kiện của ρ₁. Nếu ρ₁ thiếu hạng, code dừng và báo `RankDeficientError` (§5.4.5).
+- ρ₂ = −∫w·(XᵀQ'X + ûᵀRû − γ²d̂ᵀd̂): dấu theo [M15] (77), không theo (58)–(59) của Paper A (B-5).
+- Lời giải chuẩn để đối chiếu (`src/analysis/hinf_reference.py`): nghiệm ARE trò chơi có chiết khấu, tính hai cách (không gian con ổn định của ma trận Hamilton, và scipy với R̄ bất định), cộng phép lặp Kleinman dùng mô hình.
+
+### Kết quả
+
+- **Khớp nghiệm ARE**, sai số tương đối từ 1e-10 đến 1e-7 ở cấu hình mặc định. W_a khớp −K*ᵀ, W_d khớp L*ᵀ.
+- **Khớp phép lặp chính sách dùng mô hình ở từng vòng.** Đây là phép kiểm mạnh nhất cho cách dựng ρ₁, ρ₂, kể cả thứ tự Kronecker và dấu.
+- Đúng cho: hệ vô hướng ổn định; hệ vô hướng không ổn định (khởi tạo từ chính sách chấp nhận được, đúng phương án dự phòng của mục 8); hệ 2 chiều; hệ 3 chiều có 2 đầu vào và 2 kênh nhiễu.
+- **Quét độ nhạy** với T ∈ {1, 10, 50} ms, thời lượng thu {1, 5, 10} s, biên độ thăm dò {0.01 … 10}: cả 36 cấu hình đều đủ hạng, hội tụ sau 6 vòng, sai số P từ 5e-10 đến 3e-4. Sai số tăng theo T², vì ứng với sai số của quy tắc tích phân.
+- **Phát hiện thiếu hạng đúng như dự kiến:**
+  - Không có nhiễu thăm dò thì code dừng và báo thiếu hạng.
+  - **Nhiễu nhiều kênh gần như hằng, với W_d⁽⁰⁾ = 0, cũng làm ρ₁ thiếu hạng.** Đây là minh họa trực tiếp cho rủi ro B-6 khi chuyển sang tàu, vì δ ≈ (3, −2.5, 3).
+
+### Hệ quả cho Mốc 5
+
+1. T = 1 ms như Paper A **không** gây vấn đề điều kiện số khi dữ liệu mô phỏng không có nhiễu đo. Rủi ro chính chuyển sang hai chỗ: (i) hệ phi tuyến bị xấp xỉ bằng cơ sở hàm bị cắt (45 số hạng bậc hai, actor tuyến tính); (ii) khối W_d thiếu hạng vì δ gần như hằng.
+2. Hướng xử lý (ii) sẽ thử theo thứ tự:
+   (a) đo hạng với dữ liệu đúng như bài;
+   (b) khởi tạo W_d⁽⁰⁾ ≠ 0, vì khi đó các cột (d − d̂⁽ᵏ⁾)⊗ψ không còn tỉ lệ với nhau;
+   (c) bơm thêm nhiễu thăm dò đã biết vào kênh d (lệch bài, phải ghi rõ).
