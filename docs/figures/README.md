@@ -23,3 +23,9 @@ Toàn bộ hình sinh lại được bằng các script trong `scripts/` (xem `d
 | ![](moc3/case1_main_tau_u.png) | Lực surge: khoảng 1100 N khi chạy đều, khớp mức lực ở Hình 9a. |
 
 
+
+## Mốc 4: IRL trên bài toán đồ chơi
+
+| Hình | Nội dung |
+| --- | --- |
+| ![](moc4/convergence.png) | Bài đồ chơi 2 chiều có nhiễu: Algorithm 2 (không dùng mô hình) trùng với phép lặp chính sách dùng mô hình ở từng vòng, và hội tụ về nghiệm ARE. |
