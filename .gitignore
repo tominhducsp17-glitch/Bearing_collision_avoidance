@@ -1,0 +1,16 @@
+# Bài báo có bản quyền (Elsevier, arXiv...): giữ local, không đẩy lên repo công khai
+Main_paper/
+Side_paper/
+*.pdf
+
+# Repo tham khảo của bên thứ ba (xem docs/reference_code_notes.md để biết cách tải lại)
+external/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Kết quả chạy (sinh lại được từ config + seed)
+results/
