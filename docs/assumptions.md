@@ -8,14 +8,14 @@ Ký hiệu nguồn: [L21] Lu et al. TNNLS 2021 (bài [3] của Paper A); [M15] M
 
 ---
 
-## 1. Đang chờ thầy xác nhận
+## 1. Tự quyết kèm quy trình tinh chỉnh (Đức, 26/11/2026)
 
-Trong lúc chờ, dùng giá trị tạm ở cột cuối.
+Thầy cho biết code gốc đã mất, nên **không chờ tác giả**. Hai mục dưới đây ta tự tinh chỉnh khi code, theo tiêu chí khách quan, **không chỉnh để khớp số của Paper A**. Mọi lần quét đều được lưu và báo cáo.
 
-| # | Câu hỏi | Giá trị tạm, kèm lý do |
+| # | Điểm xuất phát | Tiêu chí chọn và điều kiện dừng |
 | --- | --- | --- |
-| K2 | k_p = 30, k_v = 0.1 có đúng không | Chạy một lần đúng (30, 0.1) để ghi lại hành vi. **Cấu hình chính: k_p = 30, k_v = 10**, quét k_v ∈ {5, 10, 20}. Dạng luật (13) giống [Z23], bài này dùng k_v/k_p = 2.5. Không có tiền lệ nào cho tỉ lệ 0.003. |
-| K1 | Chính sách hành vi, nhiễu thăm dò, thời lượng của pha thu dữ liệu | Chạy riêng một lần với cùng kịch bản. **u_b = −K_b·z (PD không dùng mô hình) + tổng sin nhiều tần số, bật trong 15 s đầu** ([N24]; trùng khối `noise` t < 15 s trong Simulink của nhóm). T = 1e-3, nên có 15 000 khoảng, gấp khoảng 150 lần số ẩn (99). Nếu PD không giữ tàu bám được ở 5.66 m/s thì báo lại, và dùng M1 + nhiễu làm phương án B (được phép theo [K17]: chính sách hành vi chỉ cần ổn định). |
+| K2: k_p, k_v | k_p = 30. Chạy đối chứng một lần đúng k_v = 0.1. Ứng viên: k_v ∈ {5, 10, 20}; dạng luật (13) giống [Z23], bài này dùng k_v/k_p = 2.5 | (i) Khi bám hoàn hảo (Mốc 2): mode chậm nhất có ζ ≥ 0.7, hoặc thời gian xác lập ≤ 5 s. (ii) Trong vòng kín (Mốc 3, 5): không phân kỳ, sai số bearing nhỏ nhất. Chọn giá trị nhỏ nhất thỏa (i) và (ii), để tránh lực điều khiển lớn. |
+| K1: pha thu dữ liệu | u_b = −K_b·z (PD không dùng mô hình) + tổng sin nhiều tần số bật trong 15 s đầu [N24]; T = 1e-3. Phương án B: M1 + nhiễu (được phép theo [K17]) | Thử lần lượt biên độ nhiễu, thời lượng, K_b. Dừng khi: rank(ρ₁) = 99; số điều kiện (sau khi chuẩn hóa cột) không còn giảm đáng kể; phép lặp hội tụ (‖ΔW‖ < ε); sai số Bellman trên **dữ liệu giữ lại để kiểm định** nhỏ và ổn định; vòng kín 40 s bị chặn, sai số bám tốt nhất. Không chọn cấu hình chỉ vì nó khớp Bảng 1. |
 
 ## 2. Đã quyết (có nguồn hoặc lý do)
 
