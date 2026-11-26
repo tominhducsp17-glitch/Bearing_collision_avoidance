@@ -49,3 +49,47 @@ Sai số bearing e = sqrt(Σ‖g − g*‖²), tính trên 40 s:
 - đồng thuận góc hội tụ;
 - khi leader đứng yên, k_v = 20 cho hội tụ còn k_v = 0.1 thì không;
 - hook của bộ lọc an toàn được gọi thật.
+
+## Mốc 3: chạy kín với plant thật và baseline M1 (26/11/2026)
+
+Lệnh chạy: `.venv/bin/python scripts/run_m1.py` (khoảng 2.5 phút). Kết quả nằm ở `results/moc3_m1/`; một số hình chọn lọc được chép vào `docs/figures/moc3/`.
+
+Thiết lập:
+- Follower là tàu thật theo (1), có nhiễu δ(t). Leader là điểm động học.
+- Tầng cao (13) dùng vị trí và vận tốc của tàu thật.
+- Tầng thấp gồm backstepping (15)–(17) với β_η = 2, cộng M1 = luật (27) của [L21] với k = (20, 12, 5). Đây chính là (62) của Paper A (B-14).
+- τ, Π, ω_d và δ được giữ không đổi trong mỗi bước 1 ms.
+
+### Kết quả
+
+| run | RMSE | IAE | ITAE | xác lập (e < 0.01), s | Σ∫\|τ\| | max\|τ\| | d_min, m | \|z_υ\| khi t > 30 (u, v, r) | max\|z_ψ\| |
+|---|---|---|---|---|---|---|---|---|---|
+| **case1 / main** | 0.0440 | 0.368 | 0.67 | 3.02 | 1.19e5 | 1.31e4 | 8.99 | 0.16, 0.21, 0.60 | 2.26 |
+| case1 / ζ của Paper A | 0.0441 | 0.372 | 0.70 | 3.04 | 1.37e5 | 1.88e4 | 8.99 | **3.01, 1.80, 5.74** | 3.30 |
+| case1 / M đầy đủ | 0.0440 | 0.368 | 0.67 | 3.00 | 1.20e5 | 1.03e4 | 8.99 | 0.16, 0.21, 0.61 | 1.41 |
+| case1 / k_v = 0.1 | 0.696 | 16.22 | 346.2 | không đạt | 3.92e6 | 2.76e5 | **0.15** | 0.94, 0.21, 2.98 | 2.97 |
+| **case2 / main** | 0.0662 | 0.767 | 2.35 | 5.60 | 2.30e5 | 1.42e4 | 8.97 | 0.16, 0.21, 0.60 | 2.74 |
+| case2 / ζ của Paper A | 0.0662 | 0.769 | 2.37 | 5.66 | 2.53e5 | 1.42e4 | 8.97 | 3.01, 1.79, 5.73 | 4.02 |
+| case2 / M đầy đủ | 0.0662 | 0.767 | 2.35 | 5.61 | 2.35e5 | 1.41e4 | 8.97 | 0.16, 0.21, 0.61 | 2.19 |
+| case2 / k_v = 0.1 | 0.374 | 11.72 | 214.6 | không đạt | 1.59e6 | 1.60e5 | 2.28 | 0.18, 0.21, 2.01 | 3.50 |
+
+Paper A báo cáo RMSE của M1 là 0.1136 (Case 1) và 0.2903 (Case 2), và tổng lực khoảng 7.2·10⁵ (Case 1). Như đã ghi ở B-8, các số này không so trực tiếp được.
+
+### Nhận xét và độ lệch so với Paper A
+
+1. **Đã sửa luật đồng thuận góc (assumptions.md, mục 4).** Ban đầu (14) dùng ψ của tàu thật với k_ω = 25. Khi đó ψ_d tích phân một ω_d rất lớn (tới 59 rad/s) trong lúc tàu thật chưa kịp quay, nên z_ψ vọt tới khoảng 12 rad: tàu quay gần 2 vòng. Bản hiện tại dùng ψ_d của tàu ảo và k_ω = 3.
+2. **M1 có sai số xác lập đúng bằng δ/k, vì luật (27) không bù nhiễu.** Cụ thể: z_u ≈ 3.05/20 = 0.15 m/s, z_v ≈ 0.21 m/s, z_r ≈ 3/5 = 0.6 rad/s. Từ đó z_ψ ≈ z_r/β_η ≈ 0.3 rad, nên **góc hướng xác lập là khoảng 1.08 rad thay vì π/4**. Hình 6 của Paper A lại cho thấy M1 hội tụ về π/4. Có thể Paper A dùng δ khác cho M1, hoặc M1 của họ có bù nhiễu; điều này chưa rõ.
+3. **Với ζ = (0.5, 0.7, 0.5) như Paper A in, M1 hỏng phần góc hướng.** z_υ khoảng 3–6, góc hướng xác lập khoảng 3.65 rad (tàu gần như chạy ngược hướng), tàu thật trễ sau tàu ảo khoảng 1.7 m. Cấu hình chính vì vậy dùng hệ số của [L21].
+4. **Quá độ góc hướng ở 2 s đầu** (ψ₃ vọt lên 2.85 rad) đến từ gia tốc tham chiếu rất lớn (‖Π‖ khoảng 300 m/s²). Thêm vào đó, (62) bỏ qua m23, nên lực ngang cỡ 10⁴ N tràn sang kênh yaw. Dùng M đầy đủ giảm max|z_ψ| từ 2.26 xuống 1.41 rad, nhưng không loại hết. Hình 6 của Paper A không có quá độ này.
+5. **Sai số bearing gần như không phụ thuộc chất lượng bám của tầng thấp.** RMSE của biến thể ζ (z_υ khoảng 3 m/s) bằng cấu hình chính tới 3 chữ số. Lý do là (13) dùng vị trí tàu thật, nên tàu ảo tự chạy lệch để bù phần trễ của tàu thật. **Hệ quả cho việc so sánh:** chỉ số bearing ở Bảng 1 không phân biệt được tầng thấp tốt hay kém. Khi so các bộ điều khiển (Mốc 6), phải báo thêm z_υ, z_η và tổng lực.
+6. **Với k_v = 0.1, hai tàu tiến sát nhau tới 0.15 m** (Case 1, t = 38.3 s), và tổng lực tăng khoảng 30 lần.
+7. **Mức lực:** τ_u xác lập khoảng 1100 N (SV3) và 700–1700 N (SV4, thay đổi theo pha co giãn), khớp Hình 9a của Paper A.
+
+### Test
+
+31 test qua. Riêng Mốc 3 kiểm:
+- ν = α_v thì ż_η = −β_η z_η;
+- α̇_v giải tích khớp sai phân hữu hạn;
+- M1 không nhiễu bám về 0;
+- z_u xác lập ≈ δ_u/k_u;
+- ngoài plant, runner và baselines, không file nào import tham số tàu.

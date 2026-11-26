@@ -26,7 +26,7 @@ Thầy cho biết code gốc đã mất, nên **không chờ tác giả**. Hai m
 | 1 | Q_i = 100·I₆, Q' = blkdiag(Q_i, 0₉) | Code của nhóm; [M15] chỉ phạt e |
 | 2 | γ² trong r | (25)–(30); [M15] |
 | 3 | β_η = 2·I₃ | [N24] dùng β_η = 2 với cùng luật backstepping (16) |
-| 4 | Đồng thuận góc theo [L21] (6): tổng chỉ lấy trên follower láng giềng; b_i = 1 nếu tàu i nối trực tiếp với leader; ψ là của tàu thật; **k_ω = 25**, giảm nếu vòng kín mất ổn định (ghi lại nếu phải giảm) | (14) chép từ [L21] (6) |
+| 4 | Đồng thuận góc theo dạng (6) của [L21]: tổng chỉ lấy trên follower láng giềng; b_i = 1 nếu i nối trực tiếp với leader. **Dùng góc của tàu ảo ψ_d**, không dùng góc tàu thật. **k_ω = 3** | (14) chép từ [L21] (6). Sửa ở Mốc 3: nếu dùng ψ thật với k_ω = 25, ψ_d tích phân một ω_d rất lớn trong khi tàu thật bị trễ, nên ψ_d trôi đi khoảng 12 rad. k_ω = 3 cho ψ hội tụ trong khoảng 1 s như Hình 6. Khi bám hoàn hảo, hai cách cho kết quả như nhau |
 | 6 | ε = 1e-6 (tương đối), tối đa 50 vòng | Các hình của bài: 10–20 vòng; [M15], [K17]: 4–7 vòng |
 | 7 | Lặp đến khi ‖ΔW‖ < ε | Lỗi in |
 | 8 | W⁽⁰⁾ = 0. Nếu phân kỳ thì khởi tạo từ K_b, ghi lại | [M15] F-16 cũng khởi tạo gain = 0 |

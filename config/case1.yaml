@@ -29,7 +29,7 @@ high_level:
   psi0: "pi/4"
   k_p: 30.0
   k_v: 20.0            # Paper A: 0.1 -> đối chứng; quét {5, 10, 20, 40}, chọn ở Mốc 2 (assumptions §1, K2)
-  k_omega: 25.0        # (4), theo [L21]
+  k_omega: 3.0         # (4): psi hội tụ ~1 s như Hình 6; 25 của [L21] gây quá độ lớn (replication_report Mốc 3)
   scaling:             # Eq. (63): beta_s(t) từng khúc
     - [0.0, 15.0, 0.073]
     - [15.0, 25.0, 0.0]

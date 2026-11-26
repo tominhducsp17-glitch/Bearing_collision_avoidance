@@ -55,7 +55,8 @@ def test_logged_acceleration_matches_Pi(case1):
 
 
 def test_heading_consensus_converges(case1):
-    L = run_perfect_tracking(case1, t_end=1.0, log_every=100)
+    """Slowest eigenvalue of k_omega (L_f + D) is k_omega * 1 = 3 1/s in Case 1 -> 6 s suffice."""
+    L = run_perfect_tracking(case1, t_end=6.0, log_every=100)
     assert np.allclose(L["psi"][-1], case1["high_level"]["psi0"], atol=1e-6)
 
 

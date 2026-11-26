@@ -49,15 +49,17 @@ def accel_to_Xi(Pi, psi_d, omega_d, theta_d):
 def heading_rate(i, psi, follower_neighbors, b_i, psi0, k_omega):
     """Eq. (14) in the form of [L21] (6) (assumptions.md item 4):
     omega_d,i = -k_omega [ sum_{j in N_i ∩ V_f} (psi_i - psi_j) + b_i (psi_i - psi0) ],
-    psi = ACTUAL headings; b_i = 1 iff follower i is adjacent to a leader."""
+    psi = VIRTUAL headings psi_d (leaders: psi0); b_i = 1 iff follower i is adjacent to a leader.
+    (With actual headings, psi_d integrates a large omega_d while the real vessel lags and
+    winds up by ~12 rad in Case 1 -> see replication_report.md, Mốc 3.)"""
     s = sum(psi[i] - psi[j] for j in follower_neighbors[i])
     return -k_omega * (s + b_i * (psi[i] - psi0))
 
 
-def heading_accel(i, r, follower_neighbors, b_i, k_omega):
-    """d/dt of Eq. (14) with psi_dot = r (measured yaw rates): needed for upsilon_d_dot in Omega."""
-    s = sum(r[i] - r[j] for j in follower_neighbors[i])
-    return -k_omega * (s + b_i * r[i])
+def heading_accel(i, omega, follower_neighbors, b_i, k_omega):
+    """d/dt of Eq. (14) with psi_d_dot = omega_d: omega_d_dot (enters upsilon_d_dot in Omega)."""
+    s = sum(omega[i] - omega[j] for j in follower_neighbors[i])
+    return -k_omega * (s + b_i * omega[i])
 
 
 def virtual_vessel_rhs(x_d, Xi, omega_d):
