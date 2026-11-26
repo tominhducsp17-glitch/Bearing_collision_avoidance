@@ -67,3 +67,30 @@ def collect_episodes(grid, T_ep, make_probing, K_b, K_i, err_scale, seed=0, **kw
                       np.asarray(K_i, float), seed=seed + s, **kw)
         parts.append(to_intervals(rec))
     return {k: np.concatenate([p[k] for p in parts]) for k in parts[0]}
+
+
+def validation_cost(W_a, phi, Q_fn, R, T=5.0, err0=(1.5, -1.5, 0.2, -0.8, 0.4, -0.2),
+                    ups_d=(4 * np.sqrt(2), 0.0, 0.0), psi0=np.pi / 4, beta_eta=2.0, alpha=0.1,
+                    dt=1e-3, seed=777, v_max=100.0):
+    """Model-free check of a candidate policy tau = W_a^T phi(X) (Mốc 5, Đức 27/11):
+    one trial run on the vessel (simulator side), cruise reference ups_d, fixed initial error
+    err0, disturbance delta(t), no probing. Returns the discounted cost of Paper A (22)
+    without the d term:  J = int exp(-alpha t) (Q'(X) + tau^T R tau) dt  (inf if it blows up).
+    Only measured costs are used, so the selection stays model-free."""
+    ups_d, err0 = np.asarray(ups_d, float), np.asarray(err0, float)
+    dist = Disturbance(T, dt, seed)
+    xd = np.r_[0.0, 0.0, psi0, ups_d[:2]]
+    xs = np.r_[xd[:3] + err0[:3], ups_d + err0[3:]]
+    J = 0.0
+    for k in range(int(round(T / dt))):
+        t = k * dt
+        X = build_X(xs[:3], xs[3:], xd[:3], ups_d, np.zeros(3), beta_eta)
+        tau = W_a.T @ phi(X)
+        d = dist(t)
+        J += np.exp(-alpha * t) * (Q_fn(X) + tau @ R @ tau) * dt
+        f = lambda tt, xx: np.r_[vessel_rhs(xx[:6], tau, d), rot2(xx[8]) @ xx[9:11], ups_d[2], 0.0, 0.0]
+        xx = rk4_step(f, t, np.r_[xs, xd], dt)
+        xs, xd = xx[:6], xx[6:]
+        if not np.all(np.isfinite(xx)) or np.abs(xs[3:6]).max() > v_max:
+            return np.inf
+    return float(J)

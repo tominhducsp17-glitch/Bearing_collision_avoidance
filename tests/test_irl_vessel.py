@@ -85,3 +85,16 @@ def test_episodic_vessel_learning_close_to_oracle():
     learned, ref = np.diag(res.W_a[3:6]), np.diag(Wref[3:6])
     assert np.all(np.sign(learned) == np.sign(ref))
     assert np.allclose(learned, ref, rtol=0.10)
+
+
+def test_validation_cost_ranks_policies():
+    """Model-free validation (Mốc 5): the P part of the behaviour policy has a finite cost,
+    a destabilising policy (positive feedback on z_ups) gets a larger (or infinite) cost."""
+    from src.sim.episodes import validation_cost
+    phi = LinearBasis(BASIS["main"])
+    R = np.diag(1 / np.array([1100., 300., 30.]) ** 2)
+    W = np.zeros((phi.size, 3))
+    W[3:6] = -np.diag([2000., 2000., 200.])
+    J0 = validation_cost(W, phi, Q_prime_fn(), R, T=1.0)
+    assert np.isfinite(J0) and J0 > 0
+    assert validation_cost(-W, phi, Q_prime_fn(), R, T=1.0) > J0

@@ -6,13 +6,9 @@
 
 | Mốc | Trạng thái |
 | --- | --- |
-| 0. Kế hoạch, khảo sát code và tài liệu | ✅ |
-| 1. Mô hình tàu, hình học bearing | ✅ |
-| 2. Tầng cao riêng (bám hoàn hảo) | ✅ |
-| 3. Chạy kín với M1 | ✅ (chưa chạy lại sau khi thêm a_max = 5) |
-| 4. IRL trên bài toán đồ chơi | ✅ |
-| 5. IRL trên tàu | 🔶 đang làm, **giới hạn tối đa 1 phiên nữa** |
-| 6. Case 1, Case 2 và báo cáo | ⏳ làm gọn |
+| 0–4 | ✅ |
+| 5. IRL trên tàu | ✅ 10/10 seed ở cả Case 1 và Case 2 (27/11) |
+| 6. Case 1, Case 2 và báo cáo | ⏳ **làm tiếp từ đây**, làm gọn |
 | Giai đoạn 2: CBF trên tàu ảo | ⏳ đóng góp chính của bài |
 
 ## Quyết định của Đức (27/11/2026)
@@ -24,18 +20,19 @@
 5. **Mốc 6 làm gọn:** Case 1 và Case 2 với M1 và IRL; hình, bảng chỉ số, các điểm lệch; **log thêm ε(t) = max_i ‖p_i − p_d,i‖** cho giai đoạn 2. Không tái tạo từng hình của bài.
 6. **Nếu IRL vẫn chưa ổn, phát triển CBF trên M1 trước**, vì bộ lọc đặt trên Π độc lập với tầng thấp; cắm IRL vào sau.
 
+## Đã làm ở phiên 27/11 (chiều)
+
+- Kiểm định và chấp nhận đã vào code chính thức: `src/sim/episodes.validation_cost` và `scripts/run_irl.train` (vòng lặp lô). Config: lưới chỉ u, `repeat: 3`, `max_batches: 5`, `select: true`, ε = 1e-5, tối đa 40 vòng. Có test `test_validation_cost_ranks_policies`.
+- `scripts/run_irl.py <case> --seeds 10 --workers 10` chạy quét seed. Kết quả ở `results/moc5_irl/<case>_seeds_table.md` và `_seeds.json`; trọng số ở `<case>_seed<s>_W.npz`. Tiêu chí đạt (đặt trước khi chạy): đủ 40 s, và ε(t) ≤ 1 m với t ≥ 5 s. **Case 1: 10/10, Case 2: 10/10.** Mỗi lần quét mất khoảng 10–25 phút với 10 tiến trình.
+- `evaluate()` đã log ε(t) = max_i ‖p_i − p_d,i‖ (`tracking_radius`).
+- Mốc 3 (M1) đã chạy lại với a_max = 5.
+
 ## Việc cần làm ngay ở phiên mới
 
-1. Đưa quy trình kiểm định và chấp nhận vào code chính thức. Hiện nó nằm ở `experiments/moc5/irl_select.py` và `irl_select2.py` (hàm `val_cost`). Vị trí đề xuất: `src/sim/episodes.py` (chạy thử kiểm định) và `scripts/run_irl.py` (vòng lặp lô dữ liệu). Thay lưới pha 1 trong config bằng **lưới chỉ u**: u_d ∈ {5, 5.66, 6.3}, v_d = 0, ω_d = 0, lặp 3 lần. Lưới có v_d ≠ 0 cho kết quả tệ hơn.
-2. Chạy 10 seed trên Case 1 và báo tỉ lệ đạt.
-3. Chạy lại Mốc 3 (M1) với a_max = 5 (`scripts/run_m1.py`) để có baseline nhất quán.
-4. Mốc 6 làm gọn như trên, rồi chuyển sang giai đoạn 2.
-
-## Kết quả thử nghiệm quan trọng của Mốc 5 (chi tiết trong findings.md)
-
-- Thử nghiệm kiểm định và chọn vòng: các seed từng phân kỳ (0, 2, 3, 4) đều chạy đủ 40 s. Seed 2 và 3 tốt (z_υ ≈ 0.1). Khi thêm tiêu chí chấp nhận và tối đa 3 lô, seed 0 ổn; seed 4 vẫn hỏng ở SV4.
-- Log của các thử nghiệm: `experiments/moc5/*.log`. Script: `experiments/moc5/*.py` (chạy từ gốc repo).
-- `scripts/run_irl.py` hiện **chưa có** bước kiểm định. Lần chạy chính thức trước đó, với lưới u × v và không kiểm định, phân kỳ ở mọi biến thể (`experiments/moc5/run_irl.log`).
+1. Mốc 6 làm gọn: chạy Case 1 và Case 2 với M1 và IRL (lấy một seed đại diện, ví dụ seed 1, và báo phân bố trên 10 seed). Làm hình, bảng chỉ số và các điểm lệch. Báo ε(t), z_υ, z_η, max|τ| và Σ∫|τ|.
+   - `main()` của `run_irl.py` (bảng biến thể basis_literal, R_identity, init_zero) **chưa chạy lại** với quy trình mới; các biến thể này giờ cũng đi qua bước kiểm định.
+2. Đỉnh lực của IRL (lên tới khoảng 10⁵ N) cần được nêu trong báo cáo.
+3. Chuyển sang giai đoạn 2 (CBF trên Π).
 
 ## Lưu ý kỹ thuật
 
