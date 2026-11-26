@@ -39,6 +39,17 @@ def compute_nominal_accel(i, p, p_dot, neighbors, k_p, k_v):
     return Pi
 
 
+def saturate_accel(Pi, a_max):
+    """||Pi|| <= a_max (norm saturation, direction kept). a_max = None -> Paper A (no limit).
+    Deviation from Paper A chosen by Đức (26/11/2026): Eq. (13) gives ||Pi|| ~ 300 m/s^2 in the
+    first second (k_p = 30, initial offsets 10-20 m), which is unphysical and drives the learned
+    low level far outside its data (replication_report.md, Mốc 5). Applied to EVERY method."""
+    if a_max is None:
+        return Pi
+    n = np.linalg.norm(Pi)
+    return Pi if n <= a_max else Pi * (a_max / n)
+
+
 def accel_to_Xi(Pi, psi_d, omega_d, theta_d):
     """Eq. (12): Xi_p = R_p^{-1}(psi_d) (Pi - R_p_dot(psi_d) theta_d),
     with R_p_dot = omega_d R_p S2. Guarantees p_d_ddot = Pi."""

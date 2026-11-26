@@ -57,7 +57,12 @@ def _trapezoid(w, h, f):
 class OffPolicyHinf:
     """Phase 2 of Algorithm 2 on a fixed data set."""
 
-    def __init__(self, sigma, phi, psi, Q_fn, R, gamma, alpha):
+    def __init__(self, sigma, phi, psi, Q_fn, R, gamma, alpha, rcond=None):
+        """rcond: None -> plain least squares (exact problems, Mốc 4). A value such as 1e-6
+        truncates singular directions below rcond * s_max of the column-scaled rho1, i.e. the
+        weights of directions the data do not excite are set by the minimum-norm rule instead
+        of being amplified (replication_report.md, Mốc 5)."""
+        self.rcond = rcond
         self.sigma, self.phi, self.psi = sigma, phi, psi
         self.Q_fn = Q_fn                    # X (..., n) -> X^T Q' X  (...)
         self.R = np.atleast_2d(np.asarray(R, float))
@@ -116,15 +121,18 @@ class OffPolicyHinf:
         sv = np.linalg.svd(A, compute_uv=False)
         rank = int((sv > rank_tol * sv[0]).sum())
         cond = float(sv[0] / sv[-1]) if sv[-1] > 0 else np.inf
-        W = np.linalg.lstsq(A, rho2, rcond=None)[0] / scale
+        W = np.linalg.lstsq(A, rho2, rcond=self.rcond)[0] / scale
+        if self.rcond is not None:
+            rank = int((sv > self.rcond * sv[0]).sum())
         return W, rank, cond
 
     def run(self, W_a0, W_d0, eps=1e-6, max_iter=50, allow_rank_deficient=False,
-            validation_rows=None):
+            validation_rows=None, relax=1.0):
         """Algorithm 2, phase 2: iterate until ||W^(k+1) - W^(k)|| <= eps max(1, ||W^(k)||)
         (stopping rule of Algorithms 1-2 with the inequality the right way round, item 7).
         `validation_rows`: intervals excluded from fitting and used to report a held-out
-        Bellman residual."""
+        Bellman residual. `relax` in (0, 1]: damped iteration
+        W_(k+1) <- (1 - relax) W_k + relax W_LS (1.0 = Algorithm 2 as written)."""
         fit = slice(None)
         if validation_rows is not None:
             mask = np.ones(self.M, bool)
@@ -143,6 +151,8 @@ class OffPolicyHinf:
                 if not allow_rank_deficient:
                     raise RankDeficientError(msg)
                 warnings.warn(msg)
+            if relax < 1.0 and W_prev is not None:
+                W = (1.0 - relax) * W_prev + relax * W
             W_c, W_a_new, W_d_new = self.unpack(W)
             entry = dict(W_c=W_c, W_a=W_a_new, W_d=W_d_new, bellman=float(np.linalg.norm(rho1 @ W - rho2)),
                          norm_W=float(np.linalg.norm(W)), cond=cond, rank=rank)

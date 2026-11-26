@@ -14,7 +14,7 @@ import numpy as np
 
 from src.graph.bearing import bearing_laplacian, partition, check_ff_invertible
 from src.high_level.followers import (neighbor_table, compute_nominal_accel, accel_to_Xi,
-                                      heading_rate, virtual_vessel_rhs, rot2)
+                                      heading_rate, virtual_vessel_rhs, rot2, saturate_accel)
 from src.high_level.leaders import centroid_map, leader_velocities, target_formation
 from src.high_level.scaling import PiecewiseScaling
 from src.safety.base import IdentityFilter, Environment
@@ -42,11 +42,16 @@ class Formation:
         self.k_p, self.k_omega = hl["k_p"], hl["k_omega"]
         self.k_v = hl["k_v"] if k_v is None else k_v
         self.schedule = PiecewiseScaling(hl["scaling"])
+        self.a_max = hl.get("a_max")          # None = Paper A (no limit on ||Pi||)
 
 
-def run_perfect_tracking(cfg, k_v=None, safety_filter=None, env=None, t_end=None, log_every=10):
-    """Mốc 2. Returns a log dict of numpy arrays (sampled every `log_every` steps)."""
+def run_perfect_tracking(cfg, k_v=None, safety_filter=None, env=None, t_end=None, log_every=10,
+                         a_max="config"):
+    """Mốc 2. Returns a log dict of numpy arrays (sampled every `log_every` steps).
+    a_max="config" uses high_level.a_max of the config; None or a number overrides it."""
     F = Formation(cfg, k_v)
+    if a_max != "config":
+        F.a_max = a_max
     safety_filter = safety_filter or IdentityFilter()
     env = env or Environment()
     dt = cfg["sim"]["dt"]
@@ -78,7 +83,8 @@ def run_perfect_tracking(cfg, k_v=None, safety_filter=None, env=None, t_end=None
             p[i], psi[i] = xf[a, :2], xf[a, 2]
             p_dot[i] = rot2(xf[a, 2]) @ xf[a, 3:5]
 
-        Pi_nom = {i: compute_nominal_accel(i, p, p_dot, F.nb, F.k_p, F.k_v) for i in F.followers}
+        Pi_nom = {i: saturate_accel(compute_nominal_accel(i, p, p_dot, F.nb, F.k_p, F.k_v), F.a_max)
+                  for i in F.followers}
         Pi, _ = safety_filter.filter(Pi_nom, {i: xf[a] for a, i in enumerate(F.followers)}, env, t)
         omega = {i: heading_rate(i, psi, F.f_nb, F.b[i], F.psi0, F.k_omega) for i in F.followers}
 
@@ -113,15 +119,24 @@ def run_perfect_tracking(cfg, k_v=None, safety_filter=None, env=None, t_end=None
 from src.high_level.followers import heading_accel                    # noqa: E402
 from src.models.vessel import vessel_rhs, Disturbance                 # noqa: E402
 from src.low_level.backstepping import tracking_errors                # noqa: E402
+from src.low_level.augmented_state import build_X                     # noqa: E402
 
 
 def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None, env=None,
-                    t_end=None, log_every=10, disturbance=True):
+                    t_end=None, log_every=10, disturbance=True, record_irl=False,
+                    high_level_uses="actual", a_max="config"):
     """Followers are real vessels (Eq. (1)) driven by `controller.tau(eta, nu, eta_d, ups_d,
     ups_d_dot)`; their virtual vessels follow Eqs. (10)-(14), whose high-level law (13) uses
     the REAL positions/velocities. Leaders are kinematic (item 13).
-    ZOH over each step: Pi, omega_d, tau and delta(t_k) (B-15)."""
+    ZOH over each step: Pi, omega_d, tau and delta(t_k) (B-15).
+    record_irl=True additionally stores, at EVERY step, the augmented state X (20)-(21), tau and
+    delta of each follower: the data set of phase 1 of Algorithm 2 (out["irl"]).
+    high_level_uses="actual" (Paper A, Eq. (13)) or "virtual": Pi computed from the virtual
+    vessels, so that Omega is an exogenous reference generator as assumed in (20) (used for
+    the phase-1 data collection, see replication_report.md Mốc 5)."""
     F = Formation(cfg, k_v)
+    if a_max != "config":
+        F.a_max = a_max
     safety_filter = safety_filter or IdentityFilter()
     env = env or Environment()
     dt = cfg["sim"]["dt"]
@@ -143,6 +158,7 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
     N = int(round(t_end / dt))
     keys = ("t", "p", "psi", "p_star", "p_d", "psi_d", "z_eta", "z_ups", "tau", "nu", "Pi")
     log = {k: [] for k in keys}
+    rec = {"t": [], "X": [], "U": [], "D": []}
     for k in range(N + 1):
         t = k * dt
         p_l, xs, xd = unpack(x)
@@ -154,21 +170,34 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
             eta, nu = xs[a, :3], xs[a, 3:]
             p[i], psi[i], r[i] = eta[:2], eta[2], nu[2]
             p_dot[i] = rot2(eta[2]) @ nu[:2]
-        Pi_nom = {i: compute_nominal_accel(i, p, p_dot, F.nb, F.k_p, F.k_v) for i in F.followers}
+        if high_level_uses == "virtual":
+            ph = {**p, **{i: xd[a, :2] for a, i in enumerate(F.followers)}}
+            vh = {**p_dot, **{i: rot2(xd[a, 2]) @ xd[a, 3:5] for a, i in enumerate(F.followers)}}
+        else:
+            ph, vh = p, p_dot
+        Pi_nom = {i: saturate_accel(compute_nominal_accel(i, ph, vh, F.nb, F.k_p, F.k_v), F.a_max)
+                  for i in F.followers}
         Pi, _ = safety_filter.filter(Pi_nom, {i: xd[a] for a, i in enumerate(F.followers)}, env, t)
         psi_v = {**{i: F.psi0 for i in F.leaders},
                  **{i: xd[a, 2] for a, i in enumerate(F.followers)}}           # item 4
         omega = {i: heading_rate(i, psi_v, F.f_nb, F.b[i], F.psi0, F.k_omega) for i in F.followers}
-        tau, zs = {}, {}
+        tau, zs, Xa = {}, {}, []
         for a, i in enumerate(F.followers):
             eta, nu = xs[a, :3], xs[a, 3:]
             eta_d = xd[a, :3]
             ups_d = np.r_[xd[a, 3:5], omega[i]]
             Xi = accel_to_Xi(Pi[i], xd[a, 2], omega[i], xd[a, 3:5])
             ups_d_dot = np.r_[Xi, heading_accel(i, omega, F.f_nb, F.b[i], F.k_omega)]
-            tau[i] = controller.tau(eta, nu, eta_d, ups_d, ups_d_dot)
+            tau[i] = controller.tau(eta, nu, eta_d, ups_d, ups_d_dot, t=t, i=i)
             zs[i] = tracking_errors(eta, nu, eta_d, ups_d, beta_eta)
+            if record_irl:
+                Xa.append(build_X(eta, nu, eta_d, ups_d, ups_d_dot, beta_eta))
         delta = dist(t)
+        if record_irl:
+            rec["t"].append(t)
+            rec["X"].append(np.array(Xa[-nf:]))
+            rec["U"].append(np.array([tau[i] for i in F.followers]))
+            rec["D"].append(np.tile(delta, (nf, 1)))
 
         if k % log_every == 0:
             log["t"].append(t)
@@ -200,4 +229,16 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
     out = {k: np.array(v) for k, v in log.items()}
     out["formation"] = F
     out["dt_log"] = dt * log_every
+    if record_irl:
+        out["irl"] = {k: np.array(v) for k, v in rec.items()}
     return out
+
+
+def irl_dataset(rec, a):
+    """Phase-1 data of follower index a in the format of src/low_level/offpolicy_irl.py:
+    intervals [t_k, t_k+1] of one control step (n_sub = 1), u and d held on the interval."""
+    t, X, U, D = rec["t"], rec["X"][:, a], rec["U"][:, a], rec["D"][:, a]
+    pair = lambda Y: np.stack([Y[:-1], Y[1:]], axis=1)
+    Uz, Dz = pair(U), pair(D)
+    Uz[:, 1], Dz[:, 1] = Uz[:, 0], Dz[:, 0]
+    return {"t": pair(t), "X": pair(X), "U": Uz, "D": Dz, "T": t[1] - t[0], "n_sub": 1}

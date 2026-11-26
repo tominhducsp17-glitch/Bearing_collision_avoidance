@@ -1,0 +1,5 @@
+u-only relax=1.0 seed=0: SV3:80✗ diag[-10484.0, -2400.0, -240.0] | SV4:21✓ diag[11590.0, -2152.0, 225.0] -> DIVERGED state diverged at t = 1.367 s [48s]
+u-only relax=1.0 seed=1: SV3:23✓ diag[-10321.0, -2032.0, -220.0] | SV4:26✓ diag[-9854.0, -2581.0, -263.0] -> OK RMSE 0.1167 |z_ups|t>30 [0.187, 0.053, 0.105] |z_eta|t>30 [0.042, 0.087, 0.053] max|tau| 30233 [40s]
+u-only relax=1.0 seed=2: SV3:24✓ diag[3819.0, -2178.0, -136.0] | SV4:80✗ diag[-10555.0, 2182.0, -197.0] -> DIVERGED state diverged at t = 3.273 s [84s]
+u-only relax=1.0 seed=3: SV3:20✓ diag[-8644.0, 2864.0, 240.0] | SV4:13✓ diag[-10531.0, -2662.0, -284.0] -> DIVERGED state diverged at t = 0.073 s [67s]
+u-only relax=1.0 seed=4: SV3:80✗ diag[-10479.0, -2161.0, -226.0] | SV4:80✗ diag[-10038.0, 3054.0, -267.0] -> DIVERGED state diverged at t = 0.134 s [155s]

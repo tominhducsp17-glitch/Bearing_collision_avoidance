@@ -1,0 +1,6 @@
+narrow relax=1.0 seed=0: SV3:19✓ diag[-7765.0, 2911.0, 234.0] | SV4:23✓ diag[11146.0, -2158.0, 234.0] -> DIVERGED state diverged at t = 0.127 s [24s]
+narrow relax=1.0 seed=1: SV3:52✓ diag[-8241.0, -2043.0, -173.0] | SV4:50✓ diag[-10133.0, 2405.0, -233.0] -> DIVERGED state diverged at t = 0.705 s [44s]
+narrow relax=1.0 seed=2: SV3:20✓ diag[9102.0, -1318.0, 202.0] | SV4:23✓ diag[-9805.0, -2892.0, -281.0] -> DIVERGED state diverged at t = 0.561 s [24s]
+narrow relax=0.5 seed=0: SV3:46✓ diag[-10427.0, -2275.0, -240.0] | SV4:47✓ diag[11145.0, -2158.0, 234.0] -> DIVERGED state diverged at t = 1.316 s [44s]
+narrow relax=0.5 seed=1: SV3:75✓ diag[-8230.0, -2032.0, -171.0] | SV4:80✗ diag[-10590.0, -2318.0, -254.0] -> OK RMSE 0.1158 |z_ups|t>30 [0.156, 0.063, 0.017] |z_eta|t>30 [0.078, 0.032, 0.008] max|tau| 47744 [81s]
+narrow relax=0.5 seed=2: SV3:41✓ diag[9103.0, -1319.0, 202.0] | SV4:44✓ diag[-9806.0, -2892.0, -281.0] -> DIVERGED state diverged at t = 0.561 s [38s]

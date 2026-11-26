@@ -48,7 +48,7 @@ def case1():
 
 
 def test_m1_no_disturbance_tracks(case1):
-    L = run_closed_loop(case1, M1Controller(), t_end=12.0, log_every=100, disturbance=False)
+    L = run_closed_loop(case1, M1Controller(), t_end=15.0, log_every=100, disturbance=False)
     assert np.abs(L["z_eta"][-1]).max() < 0.05
     assert np.abs(L["z_ups"][-1]).max() < 0.05
 
@@ -63,9 +63,9 @@ def test_m1_steady_velocity_error_matches_delta_over_k(case1):
 
 
 def test_controller_side_does_not_import_plant():
-    """PROJECT_CONTEXT §5.2.4: only the plant, the runner and the baselines may import
-    src.models.vessel (M, C, D)."""
-    allowed = {"src/models/vessel.py", "src/sim/runner.py"}
+    """PROJECT_CONTEXT §5.2.4: only the plant, the simulators (runner, phase-1 episodes) and the
+    baselines may import src.models.vessel (M, C, D)."""
+    allowed = {"src/models/vessel.py", "src/sim/runner.py", "src/sim/episodes.py"}
     offenders = []
     for path in Path("src").rglob("*.py"):
         rel = path.as_posix()

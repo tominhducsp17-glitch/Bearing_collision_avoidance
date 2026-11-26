@@ -32,7 +32,7 @@ class M1Controller:
         self.m = np.diag(M).copy()
         self.full_inertia = full_inertia
 
-    def tau(self, eta, nu, eta_d, ups_d, ups_d_dot):
+    def tau(self, eta, nu, eta_d, ups_d, ups_d_dot, t=0.0, i=None):
         _, alpha, z_ups = tracking_errors(eta, nu, eta_d, ups_d, self.beta_eta)
         a_dot = alpha_v_dot(eta, nu, eta_d, ups_d, ups_d_dot, self.beta_eta)
         u, v, r = nu

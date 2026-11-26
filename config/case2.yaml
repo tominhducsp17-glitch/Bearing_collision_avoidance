@@ -34,7 +34,30 @@ high_level:
   k_p: 30.0
   k_v: 40.0            # Paper A: 0.1; quét {5, 10, 20, 40}, chọn ở Mốc 2 (assumptions §1, K2)
   k_omega: 3.0         # (4): psi hội tụ ~1 s như Hình 6; 25 của [L21] gây quá độ lớn (replication_report Mốc 3)
+  a_max: 5.0           # ||Pi|| <= a_max (m/s^2); Paper A: không giới hạn (Đức chốt 26/11, Mốc 5; 3 -> hội tụ quá chậm)
   scaling:
     - [0.0, 15.0, 0.073]
     - [15.0, 25.0, 0.0]
     - [25.0, 40.0, -0.073]
+
+low_level:              # Mốc 5: H∞ IRL off-policy (assumptions.md, mục 1, 2, 8, 10, K1, K4)
+  beta_eta: 2.0
+  q: 100.0              # Q' = blkdiag(q I_6, 0)
+  tau_nom: [1100.0, 300.0, 30.0]   # K4: R = diag(1/tau_nom^2); R = I của Paper A là biến thể
+  gamma: 5.0
+  alpha: 0.1
+  basis: main           # main = [z; upsilon_d] ; literal = X(1..9) của Paper A
+  init_policy: behaviour   # W_a(0) = -K_b ở các hàng z_ups; Paper A: zero (không chấp nhận được)
+  eps: 1.0e-4           # dừng khi ||dW|| <= eps * max(1, ||W||)
+  max_iter: 60
+  phase1:               # thu dữ liệu nhiều đợt, tham chiếu vận tốc hằng (src/sim/episodes.py)
+    u_d: [5.0, 5.66, 6.3]
+    v_d: [-0.3, 0.0, 0.3]
+    omega_d: [0.0]
+    T_episode: 5.0
+    K_b: [2000.0, 2000.0, 200.0]
+    K_i: [4000.0, 4000.0, 400.0]
+    probe_amp: [600.0, 180.0, 18.0]
+    probe_band: [0.05, 20.0]
+    probe_n_sines: 20
+    err_scale: [2.0, 2.0, 0.3, 1.0, 0.5, 0.3]
