@@ -33,8 +33,7 @@
 
 Kế hoạch: `docs/PLAN_phase2.md`. Mốc 7 xong (`scripts/run_moc7.py`, `docs/moc7_table.md`).
 
-1. **Chờ Đức chốt cách xử lý ε** (findings Mốc 7, mục ε phụ thuộc loại tham chiếu), rồi làm Mốc 8 (bờ kênh và vật cản, S1–S3).
-2. Không bắt buộc: quét α₁, α₂ để CBF bớt bảo thủ.
+1. ε: **phương án 1 đã chốt** (hiệu chuẩn riêng cho từng kịch bản). Đọc `docs/related_work.md` (so sánh với [Mol21], [Zha24], [NH26]) và `docs/PLAN_phase2.md` (bản cập nhật lần 1: chỉnh α, Mốc 9 thiết kế lại, Mốc 9b, §4 định lý). Làm Mốc 8: chạy lại S0 với ε = 2.0 m (IRL) và 0.2 m (M1), quét α, rồi bờ kênh và vật cản S1–S3.
 3. Lưu ý: bộ giải QP là `quadprog`, cài bằng `uv pip install --python .venv/bin/python quadprog` (venv không có pip).
 
 ## Lưu ý kỹ thuật
