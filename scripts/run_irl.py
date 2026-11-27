@@ -169,6 +169,7 @@ def evaluate(L):
         "settling_s(e<0.01)": settling_time(t, e, 0.01),
         "effort_sum_int|tau|": float(np.trapezoid(np.abs(L["tau"]).sum(axis=(1, 2)), t)),
         "max|tau|": float(np.abs(L["tau"]).max()),
+        "max|tau| t>=0.1": float(np.abs(L["tau"][t >= 0.1]).max()),     # without the t = 0 step of omega_d
         "d_min (m)": float(dmin.min()),
         "mean|z_ups| t>30 (u,v,r)": np.abs(L["z_ups"][late]).mean(axis=(0, 1)).round(4).tolist(),
         "mean|z_eta| t>30 (x,y,psi)": np.abs(L["z_eta"][late]).mean(axis=(0, 1)).round(4).tolist(),

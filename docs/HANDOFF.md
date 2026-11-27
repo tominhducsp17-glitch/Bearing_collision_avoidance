@@ -8,8 +8,8 @@
 | --- | --- |
 | 0–4 | ✅ |
 | 5. IRL trên tàu | ✅ 10/10 seed ở cả Case 1 và Case 2 (27/11) |
-| 6. Case 1, Case 2 và báo cáo | ⏳ **làm tiếp từ đây**, làm gọn |
-| Giai đoạn 2: CBF trên tàu ảo | ⏳ đóng góp chính của bài |
+| 6. Case 1, Case 2 và báo cáo | ✅ làm gọn (`docs/moc6_table.md`, `docs/figures/moc6/`) |
+| Giai đoạn 2: CBF trên tàu ảo | ⏳ **làm tiếp từ đây**, đóng góp chính của bài |
 
 ## Quyết định của Đức (27/11/2026)
 
@@ -26,13 +26,15 @@
 - `scripts/run_irl.py <case> --seeds 10 --workers 10` chạy quét seed. Kết quả ở `results/moc5_irl/<case>_seeds_table.md` và `_seeds.json`; trọng số ở `<case>_seed<s>_W.npz`. Tiêu chí đạt (đặt trước khi chạy): đủ 40 s, và ε(t) ≤ 1 m với t ≥ 5 s. **Case 1: 10/10, Case 2: 10/10.** Mỗi lần quét mất khoảng 10–25 phút với 10 tiến trình.
 - `evaluate()` đã log ε(t) = max_i ‖p_i − p_d,i‖ (`tracking_radius`).
 - Mốc 3 (M1) đã chạy lại với a_max = 5.
+- Mốc 6: `scripts/run_moc6.py` chạy M1 và 10 seed IRL trên cả hai case (khoảng 5 phút). IRL ngang M1 về bearing, kém hơn về ε (0.2–0.5 m so với 0.13 m). Đỉnh lực 10⁴–10⁵ N chỉ có ở bước t = 0. Chuỗi ε(t) lưu ở `results/moc6/<case>_eps.npz`. Xem findings.md, mục Mốc 6.
 
-## Việc cần làm ngay ở phiên mới
+## Việc cần làm ngay ở phiên mới: giai đoạn 2 (CBF trên Π)
 
-1. Mốc 6 làm gọn: chạy Case 1 và Case 2 với M1 và IRL (lấy một seed đại diện, ví dụ seed 1, và báo phân bố trên 10 seed). Làm hình, bảng chỉ số và các điểm lệch. Báo ε(t), z_υ, z_η, max|τ| và Σ∫|τ|.
-   - `main()` của `run_irl.py` (bảng biến thể basis_literal, R_identity, init_zero) **chưa chạy lại** với quy trình mới; các biến thể này giờ cũng đi qua bước kiểm định.
-2. Đỉnh lực của IRL (lên tới khoảng 10⁵ N) cần được nêu trong báo cáo.
-3. Chuyển sang giai đoạn 2 (CBF trên Π).
+1. Đọc lại PLAN.md (phần giai đoạn 2) và Paper B. Khung sẵn có: `src/safety/` và `safety_filter.filter(Pi_nom, xd, env, t)` trong runner (đang là IdentityFilter).
+2. **Kịch bản gốc không có xung đột** (d_min ≈ 9 m bằng cạnh đội hình), nên cần kịch bản để CBF có việc làm: vật cản trên đường, hoặc k_v = 0.1 của Paper A (d_min = 0.16 m), hoặc đội hình co nhỏ. Hỏi Đức nếu chưa có trong PLAN.
+3. Biên an toàn trên tàu ảo phải cộng thêm ε: khoảng 0.7 m với IRL (max qua 10 seed) hoặc 0.15 m với M1. Ràng buộc ‖Π‖ ≤ a_max đưa vào QP.
+4. Làm CBF trên M1 trước, sau đó cắm IRL vào (trọng số ở `results/moc5_irl/<case>_seed<s>_W.npz`).
+5. Không bắt buộc: chạy lại bảng biến thể IRL (`run_irl.py` không kèm `--seeds`).
 
 ## Lưu ý kỹ thuật
 

@@ -124,3 +124,49 @@ Lệnh chạy: `.venv/bin/python scripts/toy_irl.py` (khoảng 15 s). Kết qu�
    (a) đo hạng với dữ liệu đúng như bài;
    (b) khởi tạo W_d⁽⁰⁾ ≠ 0, vì khi đó các cột (d − d̂⁽ᵏ⁾)⊗ψ không còn tỉ lệ với nhau;
    (c) bơm thêm nhiễu thăm dò đã biết vào kênh d (lệch bài, phải ghi rõ).
+
+## Mốc 5: H∞ IRL off-policy trên tàu (27/11/2026)
+
+Quy trình chính thức (`scripts/run_irl.py`, assumptions §1 K1, K4, mục 8):
+
+1. Pha 1: mỗi follower thu dữ liệu riêng, theo từng đợt 5 s, tham chiếu vận tốc thân tàu hằng u_d ∈ {5, 5.66, 6.3} m/s (v_d = ω_d = 0), lặp 3 lần thành 9 đợt mỗi lô. Chính sách hành vi PI cộng nhiễu thăm dò; sai số ban đầu ngẫu nhiên; nhiễu δ(t) của Paper A.
+2. Pha 2: Algorithm 2, cơ sở [z; υ_d], R = diag(1/τ_nom²), khởi tạo từ phần P của chính sách hành vi.
+3. Kiểm định không cần mô hình sau mỗi vòng (`src/sim/episodes.validation_cost`): chạy thử 5 s, tính chi phí (22) có chiết khấu và bỏ số hạng d. Giữ vòng có chi phí thấp nhất. Chấp nhận nếu chi phí đó thấp hơn chi phí phần P của chính sách hành vi; nếu không thì thu thêm một lô, tối đa 5 lô.
+
+Kiểm độ bền (`--seeds 10`). Tiêu chí đặt trước khi chạy: đủ 40 s, và ε(t) ≤ 1 m với t ≥ 5 s.
+
+| | Case 1 | Case 2 |
+|---|---|---|
+| Đạt | **10/10** | **10/10** |
+| ε_max (t ≥ 5) | 0.12–0.60 m | 0.11–0.66 m |
+| Số follower hết 5 lô mà chưa được chấp nhận | 2/20 | 4/40 (vẫn ổn định) |
+
+Bảng chi tiết: `results/moc5_irl/<case>_seeds_table.md`.
+
+## Mốc 6: Case 1 và Case 2, M1 so với IRL (27/11/2026, làm gọn)
+
+`scripts/run_moc6.py` dùng trọng số đã học ở Mốc 5, chạy M1 và 10 seed IRL trên mỗi case. Bảng: `docs/moc6_table.md`. Hình: `docs/figures/README.md` (mục Mốc 6). Chuỗi ε(t) của mọi lượt chạy: `results/moc6/<case>_eps.npz`, đầu vào cho giai đoạn 2.
+
+| Case 1 | M1 | IRL, trung vị [min, max] trên 10 seed |
+|---|---|---|
+| RMSE bearing | 0.116 | 0.117 [0.114, 0.118] |
+| ε_max, t ≥ 5 (m) | 0.131 | 0.208 [0.124, 0.597] |
+| Σ∫\|τ\| | 1.16e5 | 1.26e5 [1.24e5, 1.67e5] |
+| max\|τ\|, t ≥ 0.1 s | 3.7e3 | 7.5e3 [5.9e3, 1.4e4] |
+| d_min (m) | 8.99 | 8.99 |
+
+| Case 2 | M1 | IRL, trung vị [min, max] trên 10 seed |
+|---|---|---|
+| RMSE bearing | 0.122 | 0.122 [0.120, 0.137] |
+| ε_max, t ≥ 5 (m) | 0.131 | 0.479 [0.110, 0.664] |
+| Σ∫\|τ\| | 2.40e5 | 2.57e5 [2.53e5, 3.53e5] |
+| max\|τ\|, t ≥ 0.1 s | 4.0e3 | 6.3e3 [5.8e3, 2.4e4] |
+| d_min (m) | 8.97 | 8.97 |
+
+Các điểm lệch so với Paper A:
+
+- **Paper A cho IRL tốt hơn M1 rõ rệt (Bảng 1). Ở đây hai phương pháp gần như ngang nhau về bearing**, còn IRL bám vị trí kém hơn M1 (ε lớn hơn khoảng 1.5–3.5 lần). Đúng như Mốc 3 đã thấy, chỉ số bearing gần như không nhạy với tầng thấp, vì (13) dùng vị trí tàu thật.
+- Ưu điểm của IRL: |z_υ,r| xác lập nhỏ hơn M1 (0.11 so với 0.60 rad/s ở seed đại diện của Case 1), vì có thành phần trên υ_d bù được một phần nhiễu. M1 thì không bù nhiễu.
+- Đỉnh lực tại t = 0 (10⁴–10⁵ N) của IRL đến từ việc ω_d nhảy bậc khi khởi động (z_r ≈ 7 rad/s) nhân với khuếch đại cỡ 10⁴. Bỏ bước đầu thì max|τ| chỉ gấp 1.5–6 lần M1.
+- Thời gian xác lập theo ngưỡng 0.01 không bền: sai số của cả hai phương pháp dao động quanh ngưỡng này ở các lần co giãn, nên một bướu nhỏ cũng đẩy thời gian xác lập từ khoảng 7 s lên khoảng 26 s (Case 2). Không nên dùng chỉ số này để so sánh.
+- Bảng 1 của Paper A tự mâu thuẫn (B-8), nên chỉ so tỉ lệ giữa các phương pháp.

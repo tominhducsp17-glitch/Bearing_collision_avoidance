@@ -68,3 +68,12 @@ Trạng thái: ✅ đã xử lý · ⚠️ còn mở hoặc cần theo dõi · �
 - ⚠️ **Đỉnh lực của IRL lớn hơn M1 nhiều:** max|τ| = 1.3·10⁴ đến 9.7·10⁴, so với khoảng 4·10³ của M1. Đỉnh nằm ở quá độ đầu (khuếch đại cỡ 10⁴, đúng như R = diag(1/τ_nom²) dự đoán). Tổng ∫|τ| chỉ lớn hơn M1 khoảng 7–15 %. Phải báo cáo ở Mốc 6; nếu cần, đây là chỗ để thêm bão hòa lực (chưa làm).
 - ⚠️ **Sai số bám xác lập của IRL còn lớn:** |z_υ| t > 30 khoảng 0.1–0.5 m/s, cùng bậc với M1. ε bị chặn nhưng không về 0; đủ cho giai đoạn 2 (chỉ cần ε bị chặn và đo được).
 - ✅ **Mốc 3 đã chạy lại với a_max = 5** (`results/moc3_m1/table.md`): Case 1 M1 RMSE 0.1165, xác lập 6.65 s, ε ≈ 0.13 m. 💡 Với k_v = 0.1 của Paper A, khoảng cách nhỏ nhất vẫn tụt còn 0.16 m (Case 1, t = 35.6 s) và 1.41 m (Case 2), dù đã giới hạn gia tốc. Đây là động lực trực tiếp cho CBF.
+
+## Mốc 6: Case 1 và Case 2, M1 so với IRL (làm gọn)
+
+- ✅ Bảng: `docs/moc6_table.md`. Hình: `docs/figures/moc6/`. ε(t) của M1 và 10 seed IRL lưu ở `results/moc6/<case>_eps.npz` (đầu vào cho giai đoạn 2).
+- 💡 **IRL không thắng M1 về bearing** (RMSE 0.117 so với 0.116 ở Case 1; 0.122 so với 0.122 ở Case 2), trái với Bảng 1 của Paper A. Nó bám vị trí còn kém hơn: ε_max khoảng 0.2–0.5 m so với 0.13 m. Ưu điểm duy nhất thấy được là z_υ,r xác lập nhỏ hơn. Báo cáo trung thực; điều này không ảnh hưởng đóng góp chính, vốn nằm ở tầng cao.
+- ✅ **Đỉnh lực 10⁴–10⁵ N của IRL chỉ nằm ở bước t = 0**: ω_d nhảy bậc nên z_r ≈ 7 rad/s, nhân với khuếch đại lớn. Với t ≥ 0.1 s, max|τ| bằng 1.5–6 lần M1.
+- ⚠️ **Thời gian xác lập theo ngưỡng 0.01 không bền** (Case 2 IRL: trung vị 26 s, dù đường cong gần như trùng M1). Báo kèm, nhưng không dùng để kết luận.
+- ⚠️ Chưa chạy lại bảng biến thể của IRL (basis_literal, R_identity, init_zero) với quy trình mới. Không bắt buộc cho giai đoạn 2.
+- 💡 **Cho CBF:** với các tham số chính, d_min ≈ 9 m (bằng cạnh đội hình), nên kịch bản gốc không có xung đột. Giai đoạn 2 cần kịch bản có vật cản hoặc k_v = 0.1 (d_min = 0.16 m) để CBF có việc làm. Biên an toàn phải cộng thêm ε, khoảng 0.7 m cho IRL hoặc 0.15 m cho M1.
