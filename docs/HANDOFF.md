@@ -30,6 +30,8 @@
 
 ## Việc cần làm ngay ở phiên mới: giai đoạn 2 (CBF trên Π)
 
+**Kế hoạch chi tiết: `docs/PLAN_phase2.md` (Mốc 7–11, kịch bản S0–S3).** Đọc file đó trước; các mục [CHỐT] cần Đức duyệt. Các ý dưới đây là ghi chú cũ, đã gộp vào plan.
+
 1. Đọc lại PLAN.md (phần giai đoạn 2) và Paper B. Khung sẵn có: `src/safety/` và `safety_filter.filter(Pi_nom, xd, env, t)` trong runner (đang là IdentityFilter).
 2. **Kịch bản gốc không có xung đột** (d_min ≈ 9 m bằng cạnh đội hình), nên cần kịch bản để CBF có việc làm: vật cản trên đường, hoặc k_v = 0.1 của Paper A (d_min = 0.16 m), hoặc đội hình co nhỏ. Hỏi Đức nếu chưa có trong PLAN.
 3. Biên an toàn trên tàu ảo phải cộng thêm ε: khoảng 0.7 m với IRL (max qua 10 seed) hoặc 0.15 m với M1. Ràng buộc ‖Π‖ ≤ a_max đưa vào QP.
