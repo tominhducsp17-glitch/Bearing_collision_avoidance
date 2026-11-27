@@ -8,7 +8,7 @@ Lập ngày 27/11/2026. Agent đã đọc toàn văn ba bài trong `Related_pape
 
 Ký hiệu của ta: Paper A = bài gốc (bearing, co giãn, H∞ IRL); Paper B = RHTF-CBF cho multi-QUAV.
 
-Lưu ý: bản nháp 4 ý đóng góp mà Đức nhắc **không có trong tin nhắn agent nhận được**. Mục 3 dưới đây là bản agent tự viết lại từ PROJECT_CONTEXT §4 và từ ba bài; Đức gửi bản nháp thì agent sẽ đối chiếu.
+Mục 3 là bản nháp đóng góp của Đức (gửi 27/11), kèm nhận xét của agent.
 
 ---
 
@@ -41,22 +41,28 @@ Lưu ý: bản nháp 4 ý đóng góp mà Đức nhắc **không có trong tin n
 - Kết hợp HOCBF với học tăng cường / ADP cho đội hình tích phân kép có bất định: [NH26], và các bài [33]–[35] mà [NH26] trích (Marvi; Wang — CBF đặt trong hàm chi phí của trò chơi tổng bằng không).
 - HOCBF giữa các agent với giới hạn đầu vào, phát hiện deadlock theo sự kiện: Paper B.
 
-## 3. Đóng góp còn đứng được (bản agent đề xuất, chờ Đức đối chiếu với bản nháp 4 ý)
+## 3. Đóng góp còn đứng được (bản nháp của Đức để trình thầy, kèm nhận xét của agent)
 
-**Đ1. Co giãn do an toàn quyết định, có bảo đảm khả thi.** Tốc độ co giãn β là *biến quyết định* trong QP của leader, cùng với các ràng buộc HOCBF thật với bờ kênh và vật cản (đã cộng biên ε), và ràng buộc tỉ lệ tối thiểu s ≥ s_min. Ta chứng minh QP luôn khả thi cho tới khi chạm s_min (mục 4, Định lý 2); deadlock được thoát bằng cách co đội hình.
-*Khác [Zha24]:* ở họ, tỉ lệ do một kích thích heuristic quyết định và CBF chỉ chặn chính biến tỉ lệ, nên không có bảo đảm an toàn với vật cản. Ở ta, an toàn với bờ và vật cản là ràng buộc cứng của bài toán chọn β.
-*Khác Paper B:* ta không xoay đích để thoát deadlock.
-→ **Mạnh nhất.** Đây nên là đóng góp chính.
+**1. Bộ lọc an toàn ở tầng tàu ảo của đội hình bearing cascade có phản hồi chéo, cùng định lý an toàn cho tàu thật dưới tầng thấp H∞ học được.** Mở rộng khung ISSf của [Mol21] sang nhiều tàu, trong đó tham chiếu có trạng thái riêng và phụ thuộc vị trí tàu thật.
 
-**Đ2. An toàn cho tàu thật khi tầng thấp là bộ điều khiển học, không cần mô hình.** CBF đặt trên tàu ảo (tích phân kép đúng tuyệt đối), và an toàn của tàu thật được suy ra từ bán kính sai số bám ε của tầng thấp IRL. Đây là bản nhiều tàu, bậc hai, của ý tưởng [Mol21].
-*Khác [Mol21]:* nhiều tàu và ràng buộc giữa các tàu; mô hình rút gọn bậc 2 (HOCBF); tầng thấp chỉ UUB, học từ dữ liệu, có nhiễu; biên từ ε được hiệu chuẩn bằng dữ liệu.
-*Khác [NH26]:* ta có cascade, tàu ảo biết chính xác, nên không cần học phần an toàn.
-→ **Trung bình.** Một mình Đ2 dễ bị coi là "[Mol21] cho nhiều agent". Nó đứng được khi gắn với Đ1 và Đ3.
+*Nhận xét của agent:*
+- Điểm khác [Mol21] đáng nhấn mạnh nhất là **tham chiếu có trạng thái riêng** (tàu ảo bậc hai) và **phụ thuộc tàu thật qua (13)**. Bản thân việc "phụ thuộc vị trí thật" không phải là điểm khác: vận tốc an toàn q̇_s(q) của [Mol21] cũng phụ thuộc cấu hình thật. Cái khác là ở ta, phụ thuộc này là một vòng kín động: sai số bám làm méo tham chiếu (số hạng Q₂ trong Định lý 1 của Paper A), và tham chiếu lại quyết định sai số bám. Chính điều này sinh ra chỗ chưa chắc U1 (PLAN_phase2 §4), nên cũng là chỗ phần chứng minh phải giải quyết.
+- Với biên ε cố định, Định lý 1 hiện tại là **lập luận ống** (bất biến HOCBF cộng bất đẳng thức tam giác), chưa phải ISSf. Chỉ gọi là "mở rộng khung ISSf" khi mục 3 (h_V) chạy được. Đề xuất cách viết: "định lý an toàn theo bán kính bám ε; bản ISSf khi tầng thấp có hàm Lyapunov (mục 3)".
 
-**Đ3. So sánh có hệ thống ba cách đưa sai số bám vào biên an toàn** (Mốc 9b): ε cố định đã hiệu chuẩn; ε(t) có chặn Lipschitz; và biên động h_V = −V + α_e·h của [Mol21], với V lấy từ **critic V̂ của chính IRL** hoặc từ một hàm Lyapunov của tầng thấp. Dùng critic V̂ của H∞ IRL làm h_V là ý mới (agent chưa thấy bài nào làm), nhưng rủi ro cao: V̂ là hàm giá trị có chiết khấu, không chắc là hàm Lyapunov (xem PLAN_phase2 Mốc 9b).
-→ **Có tiềm năng, chưa chắc.** Nếu h_V với V̂ không chạy được thì vẫn giữ được phần so sánh ε cố định với ε(t) như một kết quả thực nghiệm.
+**2. Co giãn vì an toàn.** Tốc độ co giãn β là biến quyết định trong QP: giữ QP khả thi khi kênh hẹp dần, thoát deadlock, chỉ leader quyết định, có chứng minh. Bản của [Zha24] là heuristic và không bảo đảm an toàn với vật cản.
 
-**Đ4. Bằng chứng tái tạo về Paper A** (R = I cho nghiệm trễ 123 m; W = 0 không chấp nhận được; thu dữ liệu trong lúc chạy đội hình vi phạm giả thiết tự trị; M1 với ζ in trong bài hỏng góc hướng). Theo quyết định của Đức (27/11), **đây không phải đóng góp** của bài: chỉ ghi trong phần cài đặt và phụ lục để người khác chạy lại được.
+*Nhận xét của agent:* đồng ý, đây là đóng góp mạnh nhất. Hai chỗ nên viết chặt hơn: (i) "có chứng minh" nên ghi rõ là chứng minh **khả thi dưới giả thiết về hình học kênh** (B1–B3 của Định lý 2); (ii) **thoát deadlock chưa có chứng minh**: khả thi không có nghĩa là hết deadlock (U6), nên phần này hiện chỉ có bằng chứng số. "Chỉ leader quyết định" vừa là điểm gọn vừa là điểm yếu so với [Zha24] (phân tán); nên nêu thẳng.
+
+**3. (Ứng viên) Biên an toàn động.** Lấy từ hàm Lyapunov của tầng thấp theo kiểu h_V của [Mol21], thay cho ε cố định. Ở Paper A, V\* đóng vai hàm Lyapunov (Định lý 1), nên có thể dùng critic V̂ học được. Ý này mới, nhưng V̂ chỉ là xấp xỉ và Paper A dùng chiết khấu, nên phải kiểm bằng số trước khi nhận là đóng góp.
+
+*Nhận xét của agent (đã đọc lại chứng minh Định lý 1 của Paper A):* khẳng định "V\* đóng vai hàm Lyapunov" **chỉ đúng một phần**. Cụ thể:
+- Paper A chỉ chứng minh V̇\* ≤ −(1 − θ₁)λ_min(Q)‖z‖² + c₁, với c₁ ≥ ‖αV\*([0, Ω]) + γ²dᵀd‖, và **chỉ trong một lân cận** ‖z‖ ≤ L⁻¹(…). Hằng số c₁ ≠ 0 ngay cả khi không có nhiễu, vì có chiết khấu α và vì V\* phụ thuộc Ω (tức υ_d). Kết quả chỉ là UUB.
+- Chứng minh có một chỗ hở: ở (41) Paper A viết V\*(z) và coi nó xác định dương theo z, trong khi V\* là hàm của X = [z; Ω], và V\*([0, Ω]) ≠ 0.
+- Hệ quả cho mục 3: dạng V̇ ≤ −λV + c đúng là dạng ISS mà Hệ quả 1 của [Mol21] cần, nên hướng đi vẫn hợp lý. Nhưng (a) chỉ được ISSf, với tập an toàn nới rộng theo c₁/α, mà c₁ có thể lớn; (b) phải dùng V̂(z, Ω) − V̂(0, Ω) thay vì V̂; (c) chỉ đúng cục bộ, nên phải kiểm quỹ đạo nằm trong vùng đó; (d) V̂ là xấp xỉ với sai số khớp khoảng 1 %. Tất cả đã đưa vào Mốc 9b. Giữ trạng thái **ứng viên** là đúng.
+
+**4. (Nếu kịp) An toàn trong pha thu dữ liệu nhiều tàu** (Mốc 11). Không có nhận xét thêm.
+
+Ngoài bốn mục trên: các bằng chứng tái tạo về Paper A (R = I cho nghiệm trễ 123 m; W = 0 không chấp nhận được; thu dữ liệu vi phạm giả thiết tự trị; M1 với ζ in trong bài hỏng) **không phải đóng góp** (quyết định của Đức, 27/11), chỉ ghi trong phần cài đặt.
 
 ## 4. Chỗ còn thiếu trong khảo sát
 
