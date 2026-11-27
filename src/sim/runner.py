@@ -17,6 +17,17 @@ from src.high_level.followers import (neighbor_table, compute_nominal_accel, acc
                                       heading_rate, virtual_vessel_rhs, rot2, saturate_accel)
 from src.high_level.leaders import centroid_map, leader_velocities, target_formation
 from src.high_level.scaling import PiecewiseScaling
+
+
+def filter_inputs(F, p_l, v_l, t, xf):
+    """Inputs of the safety filter: virtual followers (p_d, p_d_dot) in the earth frame, and
+    leaders (p, p_dot, p_ddot); Eq. (9) gives p_ddot = beta_s(t) (p_dot - C p_dot) between
+    the switching instants of the schedule (beta_s piecewise constant)."""
+    vs = {i: (xf[a, :2].copy(), rot2(xf[a, 2]) @ xf[a, 3:5]) for a, i in enumerate(F.followers)}
+    c_dot = F.C @ v_l.ravel()
+    beta = F.schedule.beta_s(t)
+    others = {i: (p_l[a].copy(), v_l[a].copy(), beta * (v_l[a] - c_dot)) for a, i in enumerate(F.leaders)}
+    return vs, others
 from src.safety.base import IdentityFilter, Environment
 from src.sim.integrators import rk4_step
 
@@ -85,7 +96,8 @@ def run_perfect_tracking(cfg, k_v=None, safety_filter=None, env=None, t_end=None
 
         Pi_nom = {i: saturate_accel(compute_nominal_accel(i, p, p_dot, F.nb, F.k_p, F.k_v), F.a_max)
                   for i in F.followers}
-        Pi, _ = safety_filter.filter(Pi_nom, {i: xf[a] for a, i in enumerate(F.followers)}, env, t)
+        vs, others = filter_inputs(F, p_l, v_l, t, xf)
+        Pi, _ = safety_filter.filter(Pi_nom, vs, env, t, others=others)
         omega = {i: heading_rate(i, psi, F.f_nb, F.b[i], F.psi0, F.k_omega) for i in F.followers}
 
         if k % log_every == 0:
@@ -156,7 +168,9 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
         return p_l, xs, xd
 
     N = int(round(t_end / dt))
-    keys = ("t", "p", "psi", "p_star", "p_d", "psi_d", "z_eta", "z_ups", "tau", "nu", "Pi")
+    keys = ("t", "p", "psi", "p_star", "p_d", "psi_d", "z_eta", "z_ups", "tau", "nu", "Pi", "Pi_nom",
+            "cbf_h_min", "cbf_qp")
+    n_qp = n_inf = 0
     log = {k: [] for k in keys}
     rec = {"t": [], "X": [], "U": [], "D": []}
     for k in range(N + 1):
@@ -177,7 +191,10 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
             ph, vh = p, p_dot
         Pi_nom = {i: saturate_accel(compute_nominal_accel(i, ph, vh, F.nb, F.k_p, F.k_v), F.a_max)
                   for i in F.followers}
-        Pi, _ = safety_filter.filter(Pi_nom, {i: xd[a] for a, i in enumerate(F.followers)}, env, t)
+        vs, others = filter_inputs(F, p_l, v_l, t, xd)
+        Pi, finfo = safety_filter.filter(Pi_nom, vs, env, t, others=others)
+        n_qp += bool(finfo.get("qp", False))
+        n_inf += bool(finfo.get("infeasible", False))
         psi_v = {**{i: F.psi0 for i in F.leaders},
                  **{i: xd[a, 2] for a, i in enumerate(F.followers)}}           # item 4
         omega = {i: heading_rate(i, psi_v, F.f_nb, F.b[i], F.psi0, F.k_omega) for i in F.followers}
@@ -211,6 +228,9 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
             log["tau"].append(np.array([tau[i] for i in F.followers]))
             log["nu"].append(xs[:, 3:].copy())
             log["Pi"].append(np.array([Pi[i] for i in F.followers]))
+            log["Pi_nom"].append(np.array([Pi_nom[i] for i in F.followers]))
+            log["cbf_h_min"].append(finfo.get("h_min", np.nan))
+            log["cbf_qp"].append(bool(finfo.get("qp", False)))
         if k == N:
             break
 
@@ -229,6 +249,7 @@ def run_closed_loop(cfg, controller, k_v=None, beta_eta=2.0, safety_filter=None,
     out = {k: np.array(v) for k, v in log.items()}
     out["formation"] = F
     out["dt_log"] = dt * log_every
+    out["cbf_counts"] = {"steps": N + 1, "qp_solved": n_qp, "infeasible": n_inf}
     if record_irl:
         out["irl"] = {k: np.array(v) for k, v in rec.items()}
     return out

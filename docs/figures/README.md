@@ -43,3 +43,16 @@ Dải màu là min–max trên 10 seed IRL; đường xanh là seed đại diệ
 | ![](moc6/case1_tau_u.png) | Lực surge: đỉnh 10⁴–10⁵ N chỉ có ở bước t = 0 (ω_d nhảy bậc, nên z_r ≈ 7 rad/s); khi chạy đều thì khoảng 1100 N, giống M1. |
 | ![](moc6/case2_tau_u.png) | Case 2, lực surge. |
 | ![](moc6/case2_irl_trajectories.png) | Case 2, IRL seed đại diện: quỹ đạo (so với Hình 14). |
+
+## Mốc 7: CBF giữa các tàu, kịch bản S0 (k_v = 0.1)
+
+Bảng số: `../moc7_table.md`. Nét đứt là không lọc, nét liền là có CBF-QP.
+
+| Hình | Nội dung |
+| --- | --- |
+| ![](moc7/case1_S0_min_distance.png) | Case 1: không lọc thì hai tàu tiến sát nhau tới 0.16 m (M1) và 0.24–3.6 m (IRL); có CBF thì ≥ 4.1 m ở mọi seed. |
+| ![](moc7/case2_S0_min_distance.png) | Case 2, như trên. |
+| ![](moc7/case1_S0_bearing_error.png) | CBF **giảm** sai số bearing (RMSE 1.43 → 0.41 với M1): HOCBF hãm vận tốc tiến lại gần, nên có tác dụng như thêm cản cho luật k_v = 0.1. |
+| ![](moc7/case1_S0_intervention.png) | Mức can thiệp ‖Π − Π_nom‖, lên tới a_max. |
+| ![](moc7/case1_S0_M1_none_traj.png) | M1, không lọc. |
+| ![](moc7/case1_S0_M1_cbf_traj.png) | M1, có CBF. |

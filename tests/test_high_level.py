@@ -80,7 +80,7 @@ def test_static_leaders_damping_matches_linear_analysis(case1):
 def test_safety_filter_hook_is_used(case1):
     """A filter that zeroes Pi freezes the followers (theta_d(0) = 0): the hook is live."""
     class Zero(IdentityFilter):
-        def filter(self, Pi_nom, virtual_states, env, t):
+        def filter(self, Pi_nom, virtual_states, env, t, others=None):
             return {i: np.zeros(2) for i in Pi_nom}, {"zeroed": True}
     L = run_perfect_tracking(case1, safety_filter=Zero(), t_end=1.0, log_every=100)
     assert np.allclose(L["p"][-1, 2:], L["p"][0, 2:])

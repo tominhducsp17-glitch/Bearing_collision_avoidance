@@ -9,7 +9,8 @@
 | 0–4 | ✅ |
 | 5. IRL trên tàu | ✅ 10/10 seed ở cả Case 1 và Case 2 (27/11) |
 | 6. Case 1, Case 2 và báo cáo | ✅ làm gọn (`docs/moc6_table.md`, `docs/figures/moc6/`) |
-| Giai đoạn 2: CBF trên tàu ảo | ⏳ **làm tiếp từ đây**, đóng góp chính của bài |
+| 7. CBF giữa các tàu (S0) | ✅ an toàn ở mọi lượt chạy; còn mở câu hỏi về ε (findings Mốc 7) |
+| 8–11 (docs/PLAN_phase2.md) | ⏳ **làm tiếp từ Mốc 8** |
 
 ## Quyết định của Đức (27/11/2026)
 
@@ -28,15 +29,13 @@
 - Mốc 3 (M1) đã chạy lại với a_max = 5.
 - Mốc 6: `scripts/run_moc6.py` chạy M1 và 10 seed IRL trên cả hai case (khoảng 5 phút). IRL ngang M1 về bearing, kém hơn về ε (0.2–0.5 m so với 0.13 m). Đỉnh lực 10⁴–10⁵ N chỉ có ở bước t = 0. Chuỗi ε(t) lưu ở `results/moc6/<case>_eps.npz`. Xem findings.md, mục Mốc 6.
 
-## Việc cần làm ngay ở phiên mới: giai đoạn 2 (CBF trên Π)
+## Việc cần làm ngay ở phiên mới
 
-**Kế hoạch chi tiết: `docs/PLAN_phase2.md` (Mốc 7–11, kịch bản S0–S3).** Đọc file đó trước; các mục [CHỐT] cần Đức duyệt. Các ý dưới đây là ghi chú cũ, đã gộp vào plan.
+Kế hoạch: `docs/PLAN_phase2.md`. Mốc 7 xong (`scripts/run_moc7.py`, `docs/moc7_table.md`).
 
-1. Đọc lại PLAN.md (phần giai đoạn 2) và Paper B. Khung sẵn có: `src/safety/` và `safety_filter.filter(Pi_nom, xd, env, t)` trong runner (đang là IdentityFilter).
-2. **Kịch bản gốc không có xung đột** (d_min ≈ 9 m bằng cạnh đội hình), nên cần kịch bản để CBF có việc làm: vật cản trên đường, hoặc k_v = 0.1 của Paper A (d_min = 0.16 m), hoặc đội hình co nhỏ. Hỏi Đức nếu chưa có trong PLAN.
-3. Biên an toàn trên tàu ảo phải cộng thêm ε: khoảng 0.7 m với IRL (max qua 10 seed) hoặc 0.15 m với M1. Ràng buộc ‖Π‖ ≤ a_max đưa vào QP.
-4. Làm CBF trên M1 trước, sau đó cắm IRL vào (trọng số ở `results/moc5_irl/<case>_seed<s>_W.npz`).
-5. Không bắt buộc: chạy lại bảng biến thể IRL (`run_irl.py` không kèm `--seeds`).
+1. **Chờ Đức chốt cách xử lý ε** (findings Mốc 7, mục ε phụ thuộc loại tham chiếu), rồi làm Mốc 8 (bờ kênh và vật cản, S1–S3).
+2. Không bắt buộc: quét α₁, α₂ để CBF bớt bảo thủ.
+3. Lưu ý: bộ giải QP là `quadprog`, cài bằng `uv pip install --python .venv/bin/python quadprog` (venv không có pip).
 
 ## Lưu ý kỹ thuật
 

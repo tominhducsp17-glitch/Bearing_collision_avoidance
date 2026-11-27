@@ -77,3 +77,13 @@ Trạng thái: ✅ đã xử lý · ⚠️ còn mở hoặc cần theo dõi · �
 - ⚠️ **Thời gian xác lập theo ngưỡng 0.01 không bền** (Case 2 IRL: trung vị 26 s, dù đường cong gần như trùng M1). Báo kèm, nhưng không dùng để kết luận.
 - ⚠️ Chưa chạy lại bảng biến thể của IRL (basis_literal, R_identity, init_zero) với quy trình mới. Không bắt buộc cho giai đoạn 2.
 - 💡 **Cho CBF:** với các tham số chính, d_min ≈ 9 m (bằng cạnh đội hình), nên kịch bản gốc không có xung đột. Giai đoạn 2 cần kịch bản có vật cản hoặc k_v = 0.1 (d_min = 0.16 m) để CBF có việc làm. Biên an toàn phải cộng thêm ε, khoảng 0.7 m cho IRL hoặc 0.15 m cho M1.
+
+## Mốc 7: CBF giữa các tàu, kịch bản S0 (k_v = 0.1 của Paper A)
+
+Code: `src/safety/cbf.py` (HOCBF bậc 2), `src/safety/qp_filter.py` (QP tập trung, giải bằng quadprog), `scripts/run_moc7.py`. Test: `tests/test_cbf.py`. Bảng: `docs/moc7_table.md`. Thông số: d_min = 2 m, ε = 0.15 m (M1) và 0.9 m (IRL), α₁ = 1, α₂ = 2, giới hạn ‖Π‖ ≤ a_max xấp xỉ bằng đa giác 16 cạnh ngoại tiếp (cho phép vượt a_max tối đa 2 %).
+
+- ✅ **CBF giữ an toàn ở mọi lượt chạy.** Không lọc: khoảng cách thật nhỏ nhất là 0.16 m (M1, Case 1), 1.41 m (M1, Case 2); với IRL, 8/10 seed ở mỗi case vi phạm d_min (thấp nhất 0.03 m). Có lọc: ≥ 4.1 m ở cả 42 lượt có CBF; tàu ảo luôn giữ đúng biên D_ij. **Không có bước nào QP vô nghiệm.**
+- ✅ **Khi không có xung đột, CBF gần như không can thiệp:** với k_v danh định, RMSE không đổi (0.1164 so với 0.1165). Bộ lọc chỉ hoạt động khoảng 550 bước ở quá độ đầu của Case 1, và 0 bước ở Case 2.
+- 💡 **CBF làm sai số bearing giảm, chứ không tăng:** RMSE 1.43 → 0.41 (M1, Case 1), 0.89 → 0.40 (M1, Case 2). HOCBF hãm vận tốc tiến lại gần nhau, nên đóng vai trò như thêm cản cho luật (13) vốn gần như không có cản khi k_v = 0.1. Khi viết bài cần nói rõ đây là tính chất của S0, không phải ưu điểm chung.
+- ⚠️ **CBF đang bảo thủ:** khoảng cách nhỏ nhất đạt được khoảng 4.8 m, trong khi biên chỉ là 2.3 m (M1). Lý do là h = ‖Δp‖² − D² kết hợp α nhỏ thì kích hoạt sớm khi hai tàu lao vào nhau nhanh. Có thể quét α₁, α₂ để giảm bớt (chưa làm).
+- ⚠️ **ε phụ thuộc loại tham chiếu, không phải hằng số (rủi ro R1 xảy ra, nhưng không do CBF).** Ở S0, ε thật của IRL lên tới 1.05–1.8 m (vượt 0.9 m ở 1/10 seed Case 1 và 4/10 seed Case 2); M1 Case 2 là 0.155–0.176 m (vượt 0.15 m). **Mức vượt có cả khi không lọc**, nên nguyên nhân là tham chiếu dao động mạnh do k_v = 0.1, không phải CBF; CBF thậm chí làm ε giảm ở cuối lượt chạy. An toàn thật vẫn giữ nhờ biên dư lớn, nhưng *lập luận bảo đảm* (bất đẳng thức tam giác) chỉ đúng khi ε giả định ≥ ε thật. Cần Đức chốt cách xử lý trước Mốc 8.
