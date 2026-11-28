@@ -31,6 +31,8 @@
 
 ## Việc cần làm ngay ở phiên mới
 
+0. **Báo cáo tái tạo Paper A cho thầy: `docs/report_paperA.md`** (28/11), kèm hình ở `docs/figures/report/` (sinh bằng `scripts/make_report_figures.py`) và `scripts/run_all.sh`. Đức đang chờ thầy trả lời 6 câu hỏi Q1–Q6 trong report. **Chưa bắt đầu Mốc 8 cho đến khi Đức chốt.** Nếu câu trả lời của thầy khác với lựa chọn của ta, làm theo cột cuối của bảng câu hỏi trong report.
+
 Kế hoạch: `docs/PLAN_phase2.md`. Mốc 7 xong (`scripts/run_moc7.py`, `docs/moc7_table.md`).
 
 1. ε: **phương án 1 đã chốt** (hiệu chuẩn riêng cho từng kịch bản). Đọc `docs/related_work.md` (so sánh với [Mol21], [Zha24], [NH26]) và `docs/PLAN_phase2.md` (bản cập nhật lần 1: chỉnh α, Mốc 9 thiết kế lại, Mốc 9b, §4 định lý). Làm Mốc 8: chạy lại S0 với ε = 2.0 m (IRL) và 0.2 m (M1), quét α, rồi bờ kênh và vật cản S1–S3.

@@ -1,0 +1,7 @@
+case1 overview + yaw done
+case1 animation done
+case2 overview + yaw done
+case2 animation done
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 70 < 99 unknowns (cond inf): insufficient excitation
+  warnings.warn(msg)
+learning done

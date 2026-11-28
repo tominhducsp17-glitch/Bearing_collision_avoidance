@@ -56,3 +56,15 @@ Bảng số: `../moc7_table.md`. Nét đứt là không lọc, nét liền là c
 | ![](moc7/case1_S0_intervention.png) | Mức can thiệp ‖Π − Π_nom‖, lên tới a_max. |
 | ![](moc7/case1_S0_M1_none_traj.png) | M1, không lọc. |
 | ![](moc7/case1_S0_M1_cbf_traj.png) | M1, có CBF. |
+
+## Báo cáo tái tạo Paper A (28/11)
+
+Sinh bằng `scripts/make_report_figures.py`; xem `../report_paperA.md`.
+
+| Hình | Nội dung |
+| --- | --- |
+| ![](report/case1_overview.png) | Case 1, M1 so với IRL: quỹ đạo, sai số bearing, kích thước, ε(t), sai số vận tốc, lực surge. |
+| ![](report/case2_overview.png) | Case 2, như trên. |
+| ![](report/case1_yaw.png) | Góc hướng: IRL về gần π/4, M1 dừng ở khoảng 1.08 rad (không bù nhiễu). |
+| ![](report/case1_learning.png) | Algorithm 2 kèm bước kiểm định: ‖Ŵ‖, sai số Bellman, chi phí kiểm định và vòng được chọn. |
+| ![](report/case1_animation.gif) | Ảnh động Case 1, M1 và IRL chạy cạnh nhau. |

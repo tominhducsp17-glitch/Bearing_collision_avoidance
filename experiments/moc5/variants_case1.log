@@ -1,0 +1,215 @@
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 70 < 99 unknowns (cond inf): insufficient excitation
+  warnings.warn(msg)
+case1 main {"eps_max t>=5 (m)": 0.39849176532545383, "eps_mean t>30 (m)": 0.20489116935566906, "RMSE": 0.11629054581188898, "IAE": 1.5706178248883165, "ITAE": 3.650401129667757, "settling_s(e<0.01)": 6.8100000000000005, "effort_sum_int|tau|": 123760.49257546205, "max|tau|": 12734.668002935126, "max|tau| t>=0.1": 7293.225468990724, "d_min (m)": 8.993522086692355, "mean|z_ups| t>30 (u,v,r)": [0.3363, 0.1569, 0.3658], "mean|z_eta| t>30 (x,y,psi)": [0.0839, 0.1562, 0.1838], "max|z_psi|": 0.4795506247990863, "learning": {"SV3": {"rank": 70, "n_unknowns": 99, "cond": Infinity, "converged": false, "iterations": [152 s]
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.25e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.34e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.80e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.09e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.18e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.99e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.34e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.42e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.83e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.93e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 5.86e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.19e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.63e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.28e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.17e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.13e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.83e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.81e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.25e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.28e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.29e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 5.33e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.49e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.00e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 5.82e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.10e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 5.99e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.59e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.71e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 5.61e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.50e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.14e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.74e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.50e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.20e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.98e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.01e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.70e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.43e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.99e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.19e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.29e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.79e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.73e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.36e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.02e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.00e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.39e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.68e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.23e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.62e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.06e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.23e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.54e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.30e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.99e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.73e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.89e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.16e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.00e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 5.57e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.11e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.75e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.30e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.97e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.47e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.88e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.26e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.31e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.16e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.24e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.32e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.58e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.69e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.72e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.03e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.43e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.82e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.45e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.29e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.42e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.39e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.95e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.22e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.56e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.90e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 4.84e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.87e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.52e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.05e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.32e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 7.38e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.48e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.70e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.67e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 6.15e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.03e+16): insufficient excitation
+  warnings.warn(msg)
+/home/d/projects/Paper_1/src/low_level/offpolicy_irl.py:153: UserWarning: rho1 rank 84 < 99 unknowns (cond 8.61e+16): insufficient excitation
+  warnings.warn(msg)
+case1 basis_literal {"eps_max t>=5 (m)": 0.8772709921263807, "eps_mean t>30 (m)": 0.7246415711263947, "RMSE": 0.11548962183181077, "IAE": 1.555754491007211, "ITAE": 3.6009801748455783, "settling_s(e<0.01)": 6.78, "effort_sum_int|tau|": 126481.53613466889, "max|tau|": 98435.77620274428, "max|tau| t>=0.1": 7289.1624752009675, "d_min (m)": 8.993528702010249, "mean|z_ups| t>30 (u,v,r)": [0.744, 0.3196, 0.3792], "mean|z_eta| t>30 (x,y,psi)": [0.2376, 0.3574, 0.1855], "max|z_psi|": 0.38725140664133256, "learning": {"SV3": {"rank": 84, "n_unknowns": 99, "cond": 7.996125368954402e+16, "converged": false, "iterations": 40 [265 s]
+case1 R_identity {"eps_max t>=5 (m)": 3977.479038618564, "eps_mean t>30 (m)": 3079.8007354564397, "RMSE": 2.2680254466536316, "IAE": 86.73441528702799, "ITAE": 2014.5322184467864, "settling_s(e<0.01)": NaN, "effort_sum_int|tau|": 206798.65858558382, "max|tau|": 111030.43264174694, "max|tau| t>=0.1": 111030.43264174694, "d_min (m)": 6.035643793253848, "mean|z_ups| t>30 (u,v,r)": [2606.8151, 5257.8264, 203.7268], "mean|z_eta| t>30 (x,y,psi)": [863.1041, 2841.6595, 96.5311], "max|z_psi|": 316.2665247243125, "learning": {"SV3": {"rank": 70, "n_unknowns": 99, "cond": Infinity, "converged": false, "iterations": 40,  [345 s]
+/home/d/projects/Paper_1/src/models/vessel.py:63: RuntimeWarning: overflow encountered in matmul
+  nu_dot = M_INV @ (-coriolis(nu) @ nu - damping(nu) @ nu + tau + delta)
+/home/d/projects/Paper_1/src/models/vessel.py:49: RuntimeWarning: overflow encountered in scalar power
+  d11 = 0.7225 + 1.3274 * au + 5.8664 * u ** 2
+/home/d/projects/Paper_1/src/models/vessel.py:63: RuntimeWarning: invalid value encountered in subtract
+  nu_dot = M_INV @ (-coriolis(nu) @ nu - damping(nu) @ nu + tau + delta)
+case1 init_zero {"diverged": "state diverged at t = 0.004 s", "learning": {"SV3": {"rank": 70, "n_unknowns": 99, "cond": Infinity, "converged": false, "iterations": 40, "bellman_val_last": 0.0007724188866517899}, "SV4": {"rank": 70, "n_unknowns": 99, "cond": Infinity, "converged": false, "iterations": 40, "bellman_val_last": 0.0036503016947923616}}} [870 s]
+| run | RMSE | IAE | ITAE | Σ∫|τ| | max|τ| | d_min | |z_υ| t>30 (u,v,r) | |z_η| t>30 (x,y,ψ) | học (hạng, vòng, hội tụ) |
+|---|---|---|---|---|---|---|---|---|---|
+| M1 (main, [L21]) | 0.1165 | 1.544 | 3.47 | 1.16e+05 | 3.69e+03 | 8.99 | [0.159, 0.207, 0.6004] | [0.1286, 0.0217, 0.2998] |  |
+| IRL main | 0.1163 | 1.571 | 3.65 | 1.24e+05 | 1.27e+04 | 8.99 | [0.3363, 0.1569, 0.3658] | [0.0839, 0.1562, 0.1838] | SV3: 70/99, 40, ✗; SV4: 70/99, 28, ✓ |
+| IRL basis_literal | 0.1155 | 1.556 | 3.60 | 1.26e+05 | 9.84e+04 | 8.99 | [0.744, 0.3196, 0.3792] | [0.2376, 0.3574, 0.1855] | SV3: 84/99, 40, ✗; SV4: 84/99, 40, ✗ |
+| IRL R_identity | 2.2680 | 86.734 | 2014.53 | 2.07e+05 | 1.11e+05 | 6.04 | [2606.8151, 5257.8264, 203.7268] | [863.1041, 2841.6595, 96.5311] | SV3: 70/99, 40, ✗; SV4: 70/99, 40, ✗ |
+| IRL init_zero | **phân kỳ** (state diverged at t = 0.004 s) | | | | | | | | SV3: 70/99, 40, ✗; SV4: 70/99, 40, ✗ |
