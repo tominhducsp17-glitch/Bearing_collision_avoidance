@@ -41,5 +41,5 @@ Kế hoạch: `docs/PLAN_phase2.md`. Mốc 7 xong (`scripts/run_moc7.py`, `docs/
 ## Lưu ý kỹ thuật
 
 - Code nặng nên chạy nền và theo dõi (Đức muốn được cập nhật chủ động). Mỗi seed mất khoảng 40–250 s.
-- Đừng dùng `pkill -f <tên script>` trong cùng lệnh với tên đó: nó tự giết chính shell (exit 144).
+- Đừng dùng `pkill -f <tên script>` trong cùng lệnh với tên đó: nó tự giết chính shell (exit 144). Tương tự, `pgrep -f <tên script>` trong vòng chờ sẽ khớp với chính lệnh chờ, nên vòng chờ không bao giờ thoát; hãy chờ theo PID (`while kill -0 <pid>`).
 - `results/` nằm trong `.gitignore`. Hình chọn lọc để xem trên GitHub đặt ở `docs/figures/`.
